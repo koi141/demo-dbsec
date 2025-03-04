@@ -1,0 +1,557 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>1. Data Redactionの準備 &#8212; dbsec-demo  ドキュメント</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=4755f45a"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'redact/1_setup';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="2. Redactionを体験する" href="2_redaction.html" />
+    <link rel="prev" title="2. 通信の暗号化を確認する" href="../nne/2_encryption.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">dbsec-demo  ドキュメント</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">検索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">環境準備:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../env_setup/1_db23ai.html">1. Oracle Database 23ai FREEの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_setup/2_sampleSchema.html">2. サンプルスキーマ（HR）を作成する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../nne/1_setup.html">1. ネイティブ・ネットワーク暗号化の準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../nne/2_encryption.html">2. 通信の暗号化を確認する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Redaction:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Data Redactionの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_redaction.html">2. Redactionを体験する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_note.html">3. Data Redactionの注意点</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Virtual Private Database:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../vpd/1_rowControl.html">1. VPDで行制御を行う</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/2_columnControl.html">2. VPDで列制御を行う</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/3_clientIdentifier.html">3. クライアント識別子を用いた制御</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/4_cleanup.html">4. VPDの設定を削除する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SQL Firewall:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/1_setup.html">1. SQL Firewallの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/2_learningTraffic.html">2. SQLをキャプチャして学習する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dv/1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/4_twoPersonIntegrity.html">4. 二人制整合性を使用してみる</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../ols/1_setup.html">1. Oracle Label Securityの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/2_setupPolicy.html">2. OLSポリシーの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/3_checkOls.html">3. ラベル制御の確認</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/4_labelColumn.html">4. ラベルデータの処理とラベル列の非表示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/5_cleanup.html">5. OLS設定の削除手順</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/redact/1_setup.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>1. Data Redactionの準備</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sales-app">SALES_APPユーザーを作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">リダクションポリシーを作成する</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="data-redaction">
+<h1>1. Data Redactionの準備<a class="headerlink" href="#data-redaction" title="Link to this heading">#</a></h1>
+<p><strong>実施内容</strong></p>
+<ul class="simple">
+<li><p>結果の比較用ユーザーとしてSALES_APPユーザーを作成する</p></li>
+<li><p>リダクションポリシーを作成する</p></li>
+</ul>
+<section id="sales-app">
+<h2>SALES_APPユーザーを作成<a class="headerlink" href="#sales-app" title="Link to this heading">#</a></h2>
+<p>HRユーザーとリダクションの結果を比較するために、マスキングされたデータを返すユーザーとしてSALES_APP ユーザーを作成します。</p>
+<p>まず、SALES_APP ユーザーを作成します。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">SALES_APP</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="o">&lt;</span><span class="n">password</span><span class="o">&gt;</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">USERS</span><span class="w"> </span><span class="k">TEMPORARY</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP</span><span class="p">;</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">SALES_APP</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="n">Welcome1</span><span class="o">#</span><span class="n">Welcom1</span><span class="o">#</span><span class="w"> </span><span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">USERS</span><span class="w"> </span><span class="k">TEMPORARY</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="n">TEMP</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>以下は実行例です。証跡としてパスワードが残らないよう、2つのコマンドに分けて設定しています。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">sales_app</span>
+<span class="mi">2</span><span class="w">     </span><span class="k">default</span><span class="w"> </span><span class="n">tablespace</span><span class="w"> </span><span class="n">users</span>
+<span class="mi">3</span><span class="w">     </span><span class="k">temporary</span><span class="w"> </span><span class="n">tablespace</span><span class="w"> </span><span class="n">temp</span><span class="p">;</span>
+
+<span class="c1">-- passwordを設定</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="n">sales_app</span>
+<span class="n">Changing</span><span class="w"> </span><span class="n">password</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">sales_app</span>
+<span class="k">New</span><span class="w"> </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="err">パスワードを入力</span><span class="o">&gt;</span>
+<span class="n">Retype</span><span class="w"> </span><span class="k">new</span><span class="w"> </span><span class="n">password</span><span class="p">:</span><span class="w"> </span><span class="o">&lt;</span><span class="err">パスワードを再入力</span><span class="o">&gt;</span>
+<span class="n">Password</span><span class="w"> </span><span class="n">changed</span>
+</pre></div>
+</div>
+<p>次に、SALES_APP ユーザーにセッション作成権限を付与します。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">grant</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">session</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">sales_app</span><span class="p">;</span>
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">さらに、HRスキーマに対して SELECT 権限を付与します。</div>
+<div class="line">スキーマ単位で権限付与する方法は23aiの新機能となっており、これにより、SALES_APP ユーザーは HR スキーマのテーブルに対してデータを参照できるようになります。</div>
+</div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 23aiの新機能、スキーマ権限</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">grant</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">any</span><span class="w"> </span><span class="k">table</span><span class="w"> </span><span class="k">on</span><span class="w"> </span><span class="k">schema</span><span class="w"> </span><span class="n">HR</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">sales_app</span><span class="p">;</span>
+</pre></div>
+</div>
+</section>
+<section id="id1">
+<h2>リダクションポリシーを作成する<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<div class="line-block">
+<div class="line">次に、SALES_APP ユーザーには EMPLOYEES テーブルの <code class="docutils literal notranslate"><span class="pre">SALARY</span></code> 列と <code class="docutils literal notranslate"><span class="pre">COMMISSION_PCT</span></code> 列をマスキングするポリシーを作成します。</div>
+<div class="line">営業が使用するアプリケーションでは給与と手数料の値は使用しないため閲覧は必要ない、という架空の設定です。</div>
+</div>
+<p>一度に一つの列にしかリダクションポリシーを適用できないため、 <code class="docutils literal notranslate"><span class="pre">SALARY</span></code> 列と <code class="docutils literal notranslate"><span class="pre">COMMISSION_PCT</span></code> 列に別々にポリシーを適用します。</p>
+<p>まず、SALARY 列に対してリダクションポリシーを作成します。以下のコマンドを実行します：</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
+<span class="w">    </span><span class="n">DBMS_REDACT</span><span class="p">.</span><span class="n">ADD_POLICY</span><span class="p">(</span>
+<span class="w">        </span><span class="n">object_schema</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;HR&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">object_name</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;EMPLOYEES&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">column_name</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;SALARY&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">policy_name</span><span class="w">         </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;POL_REDCT_EMPLOYEES_SALARY&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">function_type</span><span class="w">       </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_REDACTION</span><span class="p">.</span><span class="n">CONSTANT</span><span class="p">,</span>
+<span class="w">        </span><span class="n">function_parameters</span><span class="w"> </span><span class="o">=&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">        </span><span class="n">expression</span><span class="w">          </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;SYS_CONTEXT(&#39;&#39;USERENV&#39;&#39;, &#39;&#39;SESSION_USER&#39;&#39;) = &#39;&#39;SALES_APP&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</pre></div>
+</div>
+<p>次に、先に作成したPOL_REDCT_EMPLOYEES_SALARYポリシーに新たに列を追加する形で <code class="docutils literal notranslate"><span class="pre">COMMISSION_PCT</span></code> 列に対してリダクションポリシーを追加します。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
+<span class="w">    </span><span class="n">DBMS_REDACT</span><span class="p">.</span><span class="n">ADD_POLICY</span><span class="p">(</span>
+<span class="w">        </span><span class="n">object_schema</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;HR&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">object_name</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;EMPLOYEES&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="k">column_name</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;SALARY&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">policy_name</span><span class="w">    </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;POL_REDCT_EMPLOYEES_SALARY&#39;</span><span class="p">,</span>
+<span class="w">        </span><span class="n">function_type</span><span class="w">  </span><span class="o">=&gt;</span><span class="w"> </span><span class="n">DBMS_REDACT</span><span class="p">.</span><span class="k">FULL</span><span class="p">,</span>
+<span class="w">        </span><span class="n">expression</span><span class="w">     </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;SYS_CONTEXT(&#39;&#39;USERENV&#39;&#39;, &#39;&#39;SESSION_USER&#39;&#39;) = &#39;&#39;SALES_APP&#39;&#39;&#39;</span>
+<span class="w">    </span><span class="p">);</span>
+<span class="k">END</span><span class="p">;</span>
+<span class="o">/</span>
+</pre></div>
+</div>
+<p>リダクションポリシーが正常に作成されたかを確認します。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- ポリシーの作成を確認</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">redaction_policies</span><span class="p">;</span>
+<span class="ss">&quot;OBJECT_OWNER&quot;</span><span class="p">,</span><span class="ss">&quot;OBJECT_NAME&quot;</span><span class="p">,</span><span class="ss">&quot;POLICY_NAME&quot;</span><span class="w">               </span><span class="p">,</span><span class="ss">&quot;EXPRESSION&quot;</span><span class="w">                                          </span><span class="p">,</span><span class="ss">&quot;ENABLE&quot;</span><span class="p">,</span><span class="ss">&quot;POLICY_DESCRIPTION&quot;</span>
+<span class="ss">&quot;HR&quot;</span><span class="w">          </span><span class="p">,</span><span class="ss">&quot;EMPLOYEES&quot;</span><span class="w">  </span><span class="p">,</span><span class="ss">&quot;POL_REDCT_EMPLOYEES_SALARY&quot;</span><span class="p">,</span><span class="ss">&quot;SYS_CONTEXT(&#39;USERENV&#39;, &#39;SESSION_USER&#39;) = &#39;SALES_APP&#39;&quot;</span><span class="p">,</span><span class="ss">&quot;YES&quot;</span><span class="w">   </span><span class="p">,</span>
+
+<span class="c1">-- リダクション対象の列を確認</span>
+<span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">object_owner</span><span class="p">,</span><span class="w"> </span><span class="n">object_name</span><span class="p">,</span><span class="w"> </span><span class="k">column_name</span><span class="p">,</span><span class="w"> </span><span class="n">function_type</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">redaction_columns</span><span class="p">;</span>
+<span class="ss">&quot;OBJECT_OWNER&quot;</span><span class="p">,</span><span class="ss">&quot;OBJECT_NAME&quot;</span><span class="p">,</span><span class="ss">&quot;COLUMN_NAME&quot;</span><span class="w">   </span><span class="p">,</span><span class="ss">&quot;FUNCTION_TYPE&quot;</span>
+<span class="ss">&quot;HR&quot;</span><span class="w">          </span><span class="p">,</span><span class="ss">&quot;EMPLOYEES&quot;</span><span class="w">  </span><span class="p">,</span><span class="ss">&quot;SALARY&quot;</span><span class="w">        </span><span class="p">,</span><span class="ss">&quot;FULL REDACTION&quot;</span>
+<span class="ss">&quot;HR&quot;</span><span class="w">          </span><span class="p">,</span><span class="ss">&quot;EMPLOYEES&quot;</span><span class="w">  </span><span class="p">,</span><span class="ss">&quot;COMMISSION_PCT&quot;</span><span class="p">,</span><span class="ss">&quot;FULL REDACTION&quot;</span>
+</pre></div>
+</div>
+<p>これで、SALES_APPユーザーが <code class="docutils literal notranslate"><span class="pre">EMPLOYEES</span></code> テーブルの <code class="docutils literal notranslate"><span class="pre">SALARY</span></code> 列と <code class="docutils literal notranslate"><span class="pre">COMMISSION_PCT</span></code> 列へのアクセスに対して、リダクションが適用されるようになりました。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../nne/2_encryption.html"
+       title="前のページ">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">2. 通信の暗号化を確認する</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_redaction.html"
+       title="次ページ">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">2. Redactionを体験する</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#sales-app">SALES_APPユーザーを作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">リダクションポリシーを作成する</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 koi141
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, koi141.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>

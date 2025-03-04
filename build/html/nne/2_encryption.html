@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+
+
+<html lang="ja" data-content_root="../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>2. 通信の暗号化を確認する &#8212; dbsec-demo  ドキュメント</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=8f2a1f02" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/sphinx-book-theme.css?v=a3416100" />
+    <link rel="stylesheet" type="text/css" href="../_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../_static/documentation_options.js?v=1cf7f4d9"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="../_static/togglebutton.js?v=4a39c7ea"></script>
+    <script src="../_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script src="../_static/translations.js?v=4755f45a"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'nne/2_encryption';</script>
+    <link rel="index" title="索引" href="../genindex.html" />
+    <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="1. Data Redactionの準備" href="../redact/1_setup.html" />
+    <link rel="prev" title="1. ネイティブ・ネットワーク暗号化の準備" href="1_setup.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="ja"/>
+  <meta name="docsearch:version" content="" />
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">本文へスキップ</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>トップに戻る</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search..."
+         aria-label="Search..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="バージョン警告"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">dbsec-demo  ドキュメント</p>
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">検索</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        <p aria-level="2" class="caption" role="heading"><span class="caption-text">環境準備:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../env_setup/1_db23ai.html">1. Oracle Database 23ai FREEの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../env_setup/2_sampleSchema.html">2. サンプルスキーマ（HR）を作成する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. ネイティブ・ネットワーク暗号化の準備</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 通信の暗号化を確認する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Data Redaction:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../redact/1_setup.html">1. Data Redactionの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../redact/2_redaction.html">2. Redactionを体験する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../redact/3_note.html">3. Data Redactionの注意点</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Virtual Private Database:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../vpd/1_rowControl.html">1. VPDで行制御を行う</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/2_columnControl.html">2. VPDで列制御を行う</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/3_clientIdentifier.html">3. クライアント識別子を用いた制御</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../vpd/4_cleanup.html">4. VPDの設定を削除する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">SQL Firewall:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/1_setup.html">1. SQL Firewallの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/2_learningTraffic.html">2. SQLをキャプチャして学習する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dv/1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/4_twoPersonIntegrity.html">4. 二人制整合性を使用してみる</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../ols/1_setup.html">1. Oracle Label Securityの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/2_setupPolicy.html">2. OLSポリシーの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/3_checkOls.html">3. ラベル制御の確認</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/4_labelColumn.html">4. ラベルデータの処理とラベル列の非表示</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ols/5_cleanup.html">5. OLS設定の削除手順</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="このページをダウンロード">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="../_sources/nne/2_encryption.rst" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="ソースファイルをダウンロード"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.rst</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="PDFに印刷"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="全画面モード"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="ライト"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="ダーク"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
+
+
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="検索" aria-label="検索" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+</button>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>2. 通信の暗号化を確認する</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> 目次 </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db">DBサーバー側で通信を待ち受ける</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">クライアント側でDBに接続する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">通信の暗号化設定を行う</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">暗号化設定後、再びDBに接続する</a></li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="id1">
+<h1>2. 通信の暗号化を確認する<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<p><strong>実施内容</strong></p>
+<ul class="simple">
+<li><p>sqlnet.oraファイルを編集し、ネイティブ・ネットワーク暗号化を有効化する</p></li>
+<li><p>Wiresharkでパケットが暗号化されているかを確認する</p></li>
+</ul>
+<section id="db">
+<h2>DBサーバー側で通信を待ち受ける<a class="headerlink" href="#db" title="Link to this heading">#</a></h2>
+<div class="line-block">
+<div class="line">まず、DBサーバー側でポート1521を開放し、通信を受け付ける準備をします。</div>
+<div class="line">次のコマンドで、ファイアウォールを設定してポート1521を解放します。</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># ポート1521を解放</span>
+sudo<span class="w"> </span>firewall-cmd<span class="w"> </span>--permanent<span class="w"> </span>--add-port<span class="o">=</span><span class="m">1521</span>/tcp
+sudo<span class="w"> </span>firewall-cmd<span class="w"> </span>--reload
+
+<span class="c1"># インターフェース名と1521番ポートが解放されていることを確認</span>
+$<span class="w"> </span>sudo<span class="w"> </span>firewall-cmd<span class="w"> </span>--list-all
+public<span class="w"> </span><span class="o">(</span>active<span class="o">)</span>
+<span class="w">    </span>target:<span class="w"> </span>default
+<span class="w">    </span>icmp-block-inversion:<span class="w"> </span>no
+<span class="w">    </span>interfaces:<span class="w"> </span>enp0s5
+<span class="w">    </span>sources:
+<span class="w">    </span>services:<span class="w"> </span>dhcpv6-client<span class="w"> </span>ssh
+<span class="w">    </span>ports:<span class="w"> </span><span class="m">1521</span>/tcp
+<span class="w">    </span>protocols:
+<span class="w">    </span>forward:<span class="w"> </span>no
+<span class="w">    </span>masquerade:<span class="w"> </span>no
+<span class="w">    </span>forward-ports:
+<span class="w">    </span>source-ports:
+<span class="w">    </span>icmp-blocks:
+<span class="w">    </span>rich<span class="w"> </span>rules:
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">次に、tsharkコマンドを使ってネットワークインターフェースを確認し、パケットキャプチャを開始します。</div>
+<div class="line">先ほど確認したインターフェース名、enp0s5 を使用してTCPポート1521で通信をキャプチャします。</div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># インターフェースの番号を確認</span>
+$<span class="w"> </span>sudo<span class="w"> </span>tshark<span class="w"> </span>-D
+Running<span class="w"> </span>as<span class="w"> </span>user<span class="w"> </span><span class="s2">&quot;root&quot;</span><span class="w"> </span>and<span class="w"> </span>group<span class="w"> </span><span class="s2">&quot;root&quot;</span>.<span class="w"> </span>This<span class="w"> </span>could<span class="w"> </span>be<span class="w"> </span>dangerous.
+<span class="m">1</span>.<span class="w"> </span>enp0s5
+<span class="m">2</span>.<span class="w"> </span>lo<span class="w"> </span><span class="o">(</span>Loopback<span class="o">)</span>
+<span class="m">3</span>.<span class="w"> </span>any
+<span class="m">4</span>.<span class="w"> </span>bluetooth-monitor
+<span class="m">5</span>.<span class="w"> </span>nflog
+<span class="m">6</span>.<span class="w"> </span>nfqueue
+<span class="m">7</span>.<span class="w"> </span>usbmon0
+<span class="m">8</span>.<span class="w"> </span>usbmon1
+<span class="m">9</span>.<span class="w"> </span>usbmon2
+<span class="m">10</span>.<span class="w"> </span>usbmon3
+...
+
+<span class="c1"># TCP/1521で受け取る通信をキャプチャ</span>
+$<span class="w"> </span>sudo<span class="w"> </span>tshark<span class="w"> </span>-i<span class="w"> </span><span class="m">1</span><span class="w"> </span>-Y<span class="w"> </span><span class="s1">&#39;tcp.port==1521&#39;</span><span class="w"> </span>-x
+</pre></div>
+</div>
+<p>これで、DBサーバー側での通信がキャプチャされるようになります。次に、クライアント側でDBに接続します。</p>
+</section>
+<section id="id2">
+<h2>クライアント側でDBに接続する<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<p>簡易接続子を使って、SQL*PlusでOracleデータベースに接続します。</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sqlplus</span> <span class="n">hr</span><span class="o">/&lt;</span><span class="n">パスポート</span><span class="o">&gt;@&lt;</span><span class="n">接続先ホスト名</span><span class="o">&gt;</span><span class="p">:</span><span class="o">&lt;</span><span class="n">ポート番号</span><span class="o">&gt;/&lt;</span><span class="n">サービス名</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>以下のコマンドで、HRユーザーとして接続します。実行例ではパスワードを省略することで証跡にパスワードが残らないように接続しています。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sqlplus<span class="w"> </span>hr@192.168.130.169:1521/freepdb1
+
+SQL*Plus:<span class="w"> </span>Release<span class="w"> </span><span class="m">21</span>.0.0.0.0<span class="w"> </span>-<span class="w"> </span>Production<span class="w"> </span>on<span class="w"> </span>Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">26</span><span class="w"> </span><span class="m">22</span>:09:52<span class="w"> </span><span class="m">2024</span>
+Version<span class="w"> </span><span class="m">21</span>.11.0.0.0
+
+Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">1982</span>,<span class="w"> </span><span class="m">2022</span>,<span class="w"> </span>Oracle.<span class="w">  </span>All<span class="w"> </span>rights<span class="w"> </span>reserved.
+
+Enter<span class="w"> </span>password:<span class="w"> </span>&lt;パスワードを入力&gt;
+Last<span class="w"> </span>Successful<span class="w"> </span>login<span class="w"> </span>time:<span class="w"> </span>Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">26</span><span class="w"> </span><span class="m">2024</span><span class="w"> </span><span class="m">22</span>:08:58<span class="w"> </span>+09:00
+
+Connected<span class="w"> </span>to:
+Oracle<span class="w"> </span>Database<span class="w"> </span>23ai<span class="w"> </span>Free<span class="w"> </span>Release<span class="w"> </span><span class="m">23</span>.0.0.0.0<span class="w"> </span>-<span class="w"> </span>Develop,<span class="w"> </span>Learn,<span class="w"> </span>and<span class="w"> </span>Run<span class="w"> </span><span class="k">for</span><span class="w"> </span>Free
+Version<span class="w"> </span><span class="m">23</span>.6.0.24.10
+
+--<span class="w"> </span>適当なSQLを発行
+SQL&gt;<span class="w"> </span><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>jobs<span class="p">;</span>
+
+JOB_ID<span class="w">     </span>JOB_TITLE<span class="w">                           </span>MIN_SALARY<span class="w"> </span>MAX_SALARY
+----------<span class="w"> </span>-----------------------------------<span class="w"> </span>----------<span class="w"> </span>----------
+AD_PRES<span class="w">    </span>President<span class="w">                                </span><span class="m">20080</span><span class="w">      </span><span class="m">40000</span>
+AD_VP<span class="w">      </span>Administration<span class="w"> </span>Vice<span class="w"> </span>President<span class="w">            </span><span class="m">15000</span><span class="w">      </span><span class="m">30000</span>
+AD_ASST<span class="w">    </span>Administration<span class="w"> </span>Assistant<span class="w">                  </span><span class="m">3000</span><span class="w">     </span><span class="m">6000</span>
+FI_MGR<span class="w">     </span>Finance<span class="w"> </span>Manager<span class="w">                           </span><span class="m">8200</span><span class="w">      </span><span class="m">16000</span>
+FI_ACCOUNT<span class="w"> </span>Accountant<span class="w">                                </span><span class="m">4200</span><span class="w">     </span><span class="m">9000</span>
+AC_MGR<span class="w">     </span>Accounting<span class="w"> </span>Manager<span class="w">                        </span><span class="m">8200</span><span class="w">      </span><span class="m">16000</span>
+...
+</pre></div>
+</div>
+<p>この時点で、DBサーバーでパケットキャプチャを実行している端末を見ると、jobs テーブルの内容が平文で送信されていることが確認できます。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>（一部抜粋）
+...
+0080  2c 01 04 05 41 44 5f 56 50 1d 41 64 6d 69 6e 69   ,...AD_VP.Admini
+0090  73 74 72 61 74 69 6f 6e 20 56 69 63 65 20 50 72   stration Vice Pr
+00a0  65 73 69 64 65 6e 74 03 c3 02 33 02 c3 04 07 2a   esident...3....*
+00b0  2c 01 04 07 41 44 5f 41 53 53 54 18 41 64 6d 69   ,...AD_ASST.Admi
+00c0  6e 69 73 74 72 61 74 69 6f 6e 20 41 73 73 69 73   nistration Assis
+00d0  74 61 6e 74 02 c2 1f 02 c2 3d 07 21 2c 01 04 06   tant.....=.!,...
+00e0  46 49 5f 4d 47 52 0f 46 69 6e 61 6e 63 65 20 4d   FI_MGR.Finance M
+00f0  61 6e 61 67 65 72 02 c2 53 03 c3 02 3d 07 1f 2c   anager..S...=..,
+0100  01 04 0a 46 49 5f 41 43 43 4f 55 4e 54 0a 41 63   ...FI_ACCOUNT.Ac
+0110  63 6f 75 6e 74 61 6e 74 02 c2 2b 02 c2 5b 07 24   countant..+..[.$
+0120  2c 01 04 06 41 43 5f 4d 47 52 12 41 63 63 6f 75   ,...AC_MGR.Accou
+0130  6e 74 69 6e 67 20 4d 61 6e 61 67 65 72 02 c2 53   nting Manager..S
+0140  03 c3 02 3d 07 26 2c 01 04 0a 41 43 5f 41 43 43   ...=.&amp;,...AC_ACC
+0150  4f 55 4e 54 11 50 75 62 6c 69 63 20 41 63 63 6f   OUNT.Public Acco
+0160  75 6e 74 61 6e 74 02 c2 2b 02 c2 5b 07 20 2c 01   untant..+..[. ,.
+0170  04 06 53 41 5f 4d 41 4e 0d 53 61 6c 65 73 20 4d   ..SA_MAN.Sales M
+0180  61 6e 61 67 65 72 02 c3 02 04 c3 03 01 51 07 27   anager.......Q.&#39;
+0190  2c 01 04 06 53 41 5f 52 45 50 14 53 61 6c 65 73   ,...SA_REP.Sales
+01a0  20 52 65 70 72 65 73 65 6e 74 61 74 69 76 65 02    Representative.
+01b0  c2 3d 04 c3 02 15 09 07 24 2c 01 04 06 50 55 5f   .=......$,...PU_
+01c0  4d 41 4e 12 50 75 72 63 68 61 73 69 6e 67 20 4d   MAN.Purchasing M
+01d0  61 6e 61 67 65 72 02 c2 51 03 c3 02 33 07 23 2c   anager..Q...3.#,
+01e0  01 04 08 50 55 5f 43 4c 45 52 4b 10 50 75 72 63   ...PU_CLERK.Purc
+01f0  68 61 73 69 6e 67 20 43 6c 65 72 6b 02 c2 1a 02   hasing Clerk....
+0200  c2 38 07 1e 2c 01 04 06 53 54 5f 4d 41 4e 0d 53   .8..,...ST_MAN.S
+...
+</pre></div>
+</div>
+<div class="line-block">
+<div class="line">この状態では、データが平文でネットワーク上に送信されており、暗号化が行われていないことが確認できます。</div>
+<div class="line">それでは、次の手順で通信の暗号化を設定します。</div>
+</div>
+</section>
+<section id="id3">
+<h2>通信の暗号化設定を行う<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<p>DBサーバーの <code class="docutils literal notranslate"><span class="pre">$ORACLE_HOME/network/admin</span></code> にある <code class="docutils literal notranslate"><span class="pre">sqlnet.ora</span></code> ファイルを編集し、通信の暗号化を有効化します。</p>
+<p>まず、 <code class="docutils literal notranslate"><span class="pre">sqlnet.ora</span></code> ファイルの場所を確認します。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ls<span class="w"> </span><span class="nv">$ORACLE_HOME</span>/network/admin
+listener.ora<span class="w">  </span>samples<span class="w">  </span>shrept.lst<span class="w">  </span>sqlnet.ora<span class="w">  </span>tnsnames.ora
+</pre></div>
+</div>
+<p>次に、 <code class="docutils literal notranslate"><span class="pre">sqlnet.ora</span></code> を編集して、暗号化を有効にします。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>vi<span class="w"> </span><span class="nv">$ORACLE_HOME</span>/network/admin/sqlnet.ora
+NAMES.DIRECTORY_PATH<span class="o">=</span><span class="w"> </span><span class="o">(</span>TNSNAMES,<span class="w"> </span>EZCONNECT<span class="o">)</span>
+
+<span class="c1"># 以下の2行を追加</span>
+<span class="hll">SQLNET.ENCRYPTION_SERVER<span class="w"> </span><span class="o">=</span><span class="w"> </span>REQUIRED
+</span><span class="hll">SQLNET.ENCRYPTION_TYPES_SERVER<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">(</span>AES256,<span class="w"> </span>AES192,<span class="w"> </span>AES128<span class="o">)</span>
+</span></pre></div>
+</div>
+<p>この設定により、データベースとの通信が暗号化されるようになります。</p>
+<p>sudo rpm -ivh oracle.mgmt_agent.241023.2127.Linux-x86_64.rpm --preserve-env=JAVA_HOME</p>
+</section>
+<section id="id4">
+<h2>暗号化設定後、再びDBに接続する<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
+<p>クライアント側で再びDBに接続し、先ほどと同様に問い合わせを行います。</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>sqlplus<span class="w"> </span>hr@192.168.130.169:1521/freepdb1
+
+SQL*Plus:<span class="w"> </span>Release<span class="w"> </span><span class="m">21</span>.0.0.0.0<span class="w"> </span>-<span class="w"> </span>Production<span class="w"> </span>on<span class="w"> </span>Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">26</span><span class="w"> </span><span class="m">22</span>:09:52<span class="w"> </span><span class="m">2024</span>
+Version<span class="w"> </span><span class="m">21</span>.11.0.0.0
+
+Copyright<span class="w"> </span><span class="o">(</span>c<span class="o">)</span><span class="w"> </span><span class="m">1982</span>,<span class="w"> </span><span class="m">2022</span>,<span class="w"> </span>Oracle.<span class="w">  </span>All<span class="w"> </span>rights<span class="w"> </span>reserved.
+
+Enter<span class="w"> </span>password:<span class="w"> </span>&lt;パスワードを入力&gt;
+Last<span class="w"> </span>Successful<span class="w"> </span>login<span class="w"> </span>time:<span class="w"> </span>Tue<span class="w"> </span>Nov<span class="w"> </span><span class="m">26</span><span class="w"> </span><span class="m">2024</span><span class="w"> </span><span class="m">22</span>:08:58<span class="w"> </span>+09:00
+
+Connected<span class="w"> </span>to:
+Oracle<span class="w"> </span>Database<span class="w"> </span>23ai<span class="w"> </span>Free<span class="w"> </span>Release<span class="w"> </span><span class="m">23</span>.0.0.0.0<span class="w"> </span>-<span class="w"> </span>Develop,<span class="w"> </span>Learn,<span class="w"> </span>and<span class="w"> </span>Run<span class="w"> </span><span class="k">for</span><span class="w"> </span>Free
+Version<span class="w"> </span><span class="m">23</span>.6.0.24.10
+
+--<span class="w"> </span>適当なSQLを発行
+SQL&gt;<span class="w"> </span><span class="k">select</span><span class="w"> </span>*<span class="w"> </span>from<span class="w"> </span>jobs<span class="p">;</span>
+
+JOB_ID<span class="w">     </span>JOB_TITLE<span class="w">                           </span>MIN_SALARY<span class="w"> </span>MAX_SALARY
+----------<span class="w"> </span>-----------------------------------<span class="w"> </span>----------<span class="w"> </span>----------
+AD_PRES<span class="w">    </span>President<span class="w">                                </span><span class="m">20080</span><span class="w">      </span><span class="m">40000</span>
+AD_VP<span class="w">      </span>Administration<span class="w"> </span>Vice<span class="w"> </span>President<span class="w">            </span><span class="m">15000</span><span class="w">      </span><span class="m">30000</span>
+AD_ASST<span class="w">    </span>Administration<span class="w"> </span>Assistant<span class="w">                  </span><span class="m">3000</span><span class="w">     </span><span class="m">6000</span>
+FI_MGR<span class="w">     </span>Finance<span class="w"> </span>Manager<span class="w">                           </span><span class="m">8200</span><span class="w">      </span><span class="m">16000</span>
+FI_ACCOUNT<span class="w"> </span>Accountant<span class="w">                                </span><span class="m">4200</span><span class="w">     </span><span class="m">9000</span>
+AC_MGR<span class="w">     </span>Accounting<span class="w"> </span>Manager<span class="w">                        </span><span class="m">8200</span><span class="w">      </span><span class="m">16000</span>
+...
+</pre></div>
+</div>
+<p>Wiresharkでのキャプチャを確認すると、データが平文ではなく、暗号化されていることが確認できます。</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>（一部抜粋）
+...
+0140  41 d7 65 ec 53 50 c4 46 10 a4 08 e4 30 9b 68 7f   A.e.SP.F....0.h.
+0150  2c 19 28 2c 5d 58 09 f4 7a c6 16 5f 8e 6a 42 1d   ,.(,]X..z.._.jB.
+0160  e0 7a 69 f9 eb 86 96 44 36 5e c6 81 e8 cb 48 61   .zi....D6^....Ha
+0170  44 e1 02 61 ca 47 ce d0 58 df 2c be 3b cb 02 36   D..a.G..X.,.;..6
+0180  05 a8 1f 4f e8 d9 be 71 da ac 67 36 e0 65 9d 4b   ...O...q..g6.e.K
+0190  e3 8f ef d3 5f 30 fa 74 24 fa 6c b8 5e 87 71 c1   ...._0.t$.l.^.q.
+01a0  67 af 2e e5 b3 e4 4a e8 c7 c6 dc 61 11 22 b4 69   g.....J....a.&quot;.i
+01b0  68 42 f3 e9 da 80 ad 5e d6 7b 75 f3 10 53 04 77   hB.....^.{u..S.w
+01c0  8c 62 68 2c e8 ab 9b 4e 6f 54 4b ec fa fb 5a ed   .bh,...NoTK...Z.
+01d0  61 63 97 27 74 a5 d5 1f ce 54 b8 56 d8 a3 c0 e1   ac.&#39;t....T.V....
+01e0  a4 1e ca 5f 39 0c 1e ec 3e 23 57 a1 a4 a2 c6 2b   ..._9...&gt;#W....+
+01f0  c1 27 04 07 4f 0e 10 ac 13 ff b0 ae 31 48 a8 26   .&#39;..O.......1H.&amp;
+0200  df 6e 68 dc fd 17 36 db 4d 07 ad 11 af e3 ff 80   .nh...6.M.......
+0210  d1 5e cf ab 61 f9 57 36 6f 98 52 d0 49 29 13 57   .^..a.W6o.R.I).W
+0220  8d 21 32 1d 40 cb d0 a2 96 70 db 13 ae 35 0d ec   .!2.@....p...5..
+...
+</pre></div>
+</div>
+<p>このように通信が確実に暗号化されていることが確認できます。</p>
+<p>以上で、ネイティブ・ネットワーク暗号化のデモは終了です。</p>
+</section>
+</section>
+
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="1_setup.html"
+       title="前のページ">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">1. ネイティブ・ネットワーク暗号化の準備</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../redact/1_setup.html"
+       title="次ページ">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">1. Data Redactionの準備</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> 目次
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db">DBサーバー側で通信を待ち受ける</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">クライアント側でDBに接続する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">通信の暗号化設定を行う</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">暗号化設定後、再びDBに接続する</a></li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+著者 koi141
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024, koi141.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
