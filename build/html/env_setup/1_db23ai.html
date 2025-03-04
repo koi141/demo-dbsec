@@ -345,7 +345,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai">DB23aiをインストールする</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai">DB23aiについて</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai-free">DB23ai FREEを準備する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">関連リンク</a></li>
 </ul>
             </nav>
         </div>
@@ -359,13 +361,35 @@
                   
   <section id="oracle-database-23ai-free">
 <h1>1. Oracle Database 23ai FREEの準備<a class="headerlink" href="#oracle-database-23ai-free" title="Link to this heading">#</a></h1>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
-<li><p>DB23aiをインストールし、データベースを作成する</p></li>
+<li><p>DB23ai FREEをインストールし、データベースを作成する</p></li>
 </ul>
+</aside>
 <section id="db23ai">
-<h2>DB23aiをインストールする<a class="headerlink" href="#db23ai" title="Link to this heading">#</a></h2>
-<p>23aiの提供形式には、以下の3種類があります。</p>
+<h2>DB23aiについて<a class="headerlink" href="#db23ai" title="Link to this heading">#</a></h2>
+<p>23aiは以下の環境にてご使用いただけます。（2025年1月時点）</p>
+<dl class="simple">
+<dt><strong>Oracle Cloud環境</strong></dt><dd><ul class="simple">
+<li><p>Base Database Service</p></li>
+<li><p>Exadata Database Service</p></li>
+<li><p>Autonomous Database</p></li>
+</ul>
+</dd>
+<dt><strong>オンプレミス環境</strong></dt><dd><ul class="simple">
+<li><p>FREE(無償版)</p></li>
+<li><p>Oracle Database Appliance</p></li>
+<li><p>Exadata Database Appliance</p></li>
+</ul>
+</dd>
+</dl>
+<p>このサイトで紹介する手順の環境は主に無償版である23ai FREEを使用します。
+ダウンロードは <a class="reference external" href="https://www.oracle.com/jp/database/free/get-started/">こちら</a> から行えます。</p>
+</section>
+<section id="db23ai-free">
+<h2>DB23ai FREEを準備する<a class="headerlink" href="#db23ai-free" title="Link to this heading">#</a></h2>
+<p>FREEでは以下の3種類で提供しています。</p>
 <ul class="simple">
 <li><p>コンテナ（docker, podman）</p></li>
 <li><p>VMイメージ（VM VirtualBox）</p></li>
@@ -374,6 +398,23 @@
 <p>各インストール手順については、 <a class="reference external" href="https://docs.oracle.com/cd/G11854_01/xeinl/index.html">こちらのドキュメント</a> に記載されていますので、お好みの方法でDB環境を構築してください。</p>
 <p>rpmでインストールする場合、 <a class="reference external" href="https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install">OCIチュートリアル</a> でも手順の案内されています。
 ぜひ参考にしてみてください。OCIチュートリアルを参照する場合、表領域の作成手順は不要ですので、その前の手順までを実施してください。</p>
+<div class="admonition-free admonition">
+<p class="admonition-title">FREEのライセンス制限</p>
+<div class="line-block">
+<div class="line">FREEでは処理に使用されるCPUは2コアに自動的に制限されます。</div>
+<div class="line">RAMは最大2GBまでとなっており、使用可能な場合でも超過することはできません。</div>
+<div class="line">データの使用料は最大12GBであり、これを超えて増加すると「ORA-12954: リクエストが、最大許容データベース・サイズの12GBを超えています」というエラーになります。</div>
+<div class="line">参考： <a class="reference external" href="https://docs.oracle.com/cd/G11854_01/xeinl/licensing-restrictions.html#GUID-A3BF7927-EC58-40FC-96B6-1A5E135D19BA">ライセンス制限</a></div>
+</div>
+</div>
+</section>
+<section id="id1">
+<h2>関連リンク<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><a class="reference external" href="https://docs.oracle.com/cd/G11854_01/books.html">Oracle Database 23ai ドキュメント（日本語）</a></p></li>
+<li><p><a class="reference external" href="https://speakerdeck.com/oracle4engineer/oracle-database-23ai-overview">Oracle Database 23ai Overview 戦略とロードマップ - Speaker Deck</a></p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/cd/G11854_01/xeinl/index.html">Oracle Database Freeインストレーション・ガイド, 23ai for Linux（日本語）</a></p></li>
+</ul>
 </section>
 </section>
 
@@ -423,7 +464,9 @@
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai">DB23aiをインストールする</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai">DB23aiについて</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#db23ai-free">DB23ai FREEを準備する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">関連リンク</a></li>
 </ul>
   </nav></div>
 
