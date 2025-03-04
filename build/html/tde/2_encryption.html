@@ -361,14 +361,16 @@
                   
   <section id="tde">
 <h1>2. TDE 表領域を暗号化する<a class="headerlink" href="#tde" title="Link to this heading">#</a></h1>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>表領域に対して暗号化を行い、データファイルを暗号化</p></li>
 <li><p>OSコマンドでデータファイルを開き、データが暗号化されていることを確認する</p></li>
 </ul>
+</aside>
 <section id="id1">
 <h2>データファイルの確認<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>作成したHRスキーマを使用します。手順ではUSERS表領域に作成していますが、念のため、実際に確認を行います。</p>
+<p>作成したHRスキーマを使用します。手順ではUSERS表領域に作成していますが、念のため実際に確認を行います。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="c1">-- 結果をcsv形式で出力</span>
@@ -484,8 +486,10 @@
 </pre></div>
 </div>
 </div>
-<p>復号後、データファイルの内容が再び人間が読める形式で表示されることが確認できます。
-もし、別の端末でオンライン暗号化または復号を行っている最中にデータファイルを確認する場合、次のようなコマンドで確認できます。</p>
+<div class="line-block">
+<div class="line">復号後、データファイルの内容が再び人間が読める形式で表示されることが確認できます。</div>
+<div class="line">また他の端末にて、オンライン暗号化または復号処理を実行中に <code class="docutils literal notranslate"><span class="pre">strings</span></code> コマンドを実行することで、暗号化・復号処理中のファイルの状況を確認することができます。</div>
+</div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ls<span class="w"> </span>-l
 total<span class="w"> </span><span class="m">1077780</span>
 -rw-r-----.<span class="w"> </span><span class="m">1</span><span class="w"> </span>oracle<span class="w"> </span>oinstall<span class="w"> </span><span class="m">597696512</span><span class="w"> </span>Nov<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">14</span>:09<span class="w"> </span>sysaux01.dbf
@@ -496,8 +500,10 @@ total<span class="w"> </span><span class="m">1077780</span>
 -rw-r-----.<span class="w"> </span><span class="m">1</span><span class="w"> </span>oracle<span class="w"> </span>oinstall<span class="w">  </span><span class="m">75505664</span><span class="w"> </span>Nov<span class="w"> </span><span class="m">28</span><span class="w"> </span><span class="m">14</span>:10<span class="w"> </span>users01.dbf_new
 </pre></div>
 </div>
-<p>ここで、 <code class="docutils literal notranslate"><span class="pre">users01.dbf_new</span></code> という同じサイズの新しいデータファイルが作成されていることが分かります。
-このため、オンライン暗号化を行う際には、対象のデータファイルと同じサイズの空き容量が必要です。</p>
+<div class="line-block">
+<div class="line">以上の結果より <code class="docutils literal notranslate"><span class="pre">users01.dbf_new</span></code> という同じサイズの新しいデータファイルが作成されていることが分かります。</div>
+<div class="line">このようにオンライン処理では、元のデータファイルと同じサイズの新しいファイルが作成されます。そのため、オンライン暗号化を行う際には、対象データファイルと同じサイズの空き容量を確保しておく必要があります。</div>
+</div>
 </section>
 </section>
 

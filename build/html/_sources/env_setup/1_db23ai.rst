@@ -22,8 +22,8 @@ DB23aiについて
     + Oracle Database Appliance
     + Exadata Database Appliance
 
-このサイトで紹介する手順の環境は主に無償版である23ai FREEを使用します。
-ダウンロードは `こちら <https://www.oracle.com/jp/database/free/get-started/>`__ から行えます。  
+| このサイトで紹介する手順の環境は主に無償版である23ai FREEを使用します。
+| ダウンロードは `こちら <https://www.oracle.com/jp/database/free/get-started/>`__ から行えます。  
 
 
 ******************************
@@ -38,7 +38,7 @@ FREEでは以下の3種類で提供しています。
 
 各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載されていますので、お好みの方法でDB環境を構築してください。
 
-rpmでインストールする場合、 `OCIチュートリアル <https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install>`__ でも手順の案内されています。  
+rpmでインストールする場合、 `OCIチュートリアル <https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install>`__ でもインストール手順が紹介されています。  
 ぜひ参考にしてみてください。OCIチュートリアルを参照する場合、表領域の作成手順は不要ですので、その前の手順までを実施してください。
 
 

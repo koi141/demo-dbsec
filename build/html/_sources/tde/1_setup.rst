@@ -2,10 +2,10 @@
 1. TDEの準備
 ###########################
 
-**実施内容**
+.. topic:: 実施内容
 
-+ TDEに関連する初期化パラメータ設定する
-+ キーストアおよびマスター暗号鍵を作成する
+   + TDEに関連する初期化パラメータ設定する
+   + キーストアおよびマスター暗号鍵を作成する
 
 
 ****************************
@@ -14,8 +14,8 @@
 
 TDEに関連する初期化パラメータは2つあります。
 
-+ : `wallet_root <https://docs.oracle.com/cd/F82042_01/refrn/WALLET_ROOT.html>`__ :  暗号化キー（TDEキー）や証明書などを保存する場所を指定
-+ : `tde_configuration <https://docs.oracle.com/cd/F82042_01/refrn/TDE_CONFIGURATION.html>`__ : TDEの設定を定義
++ `wallet_root <https://docs.oracle.com/cd/F82042_01/refrn/WALLET_ROOT.html>`__ :  暗号化キー（TDEキー）や証明書などを保存する場所を指定
++ `tde_configuration <https://docs.oracle.com/cd/F82042_01/refrn/TDE_CONFIGURATION.html>`__ : TDEの設定を定義
 
 それぞれを確認していきましょう。
 
@@ -61,7 +61,7 @@ tde_configuration
 初期化パラメータの設定
 ****************************
 
-それぞれのパラメータを設定していきます。
+では、各パラメータを設定していきます。
 
 wallet_root
 ============================
@@ -72,7 +72,7 @@ TDEの暗号化キーはOracle Walletに保存されます。
 ディレクトリは任意の場所に指定できますが、ここでは ``/opt/oracle/admin/FREE/wallet`` を指定します。
 なお、walletディレクトリは作成されていませんので、このディレクトリは事前に作成しておきます。
 
-.. code:: bash
+.. code-block:: bash
 
    $ mkdir -p /opt/oracle/admin/FREE/wallet
 
@@ -80,7 +80,7 @@ TDEの暗号化キーはOracle Walletに保存されます。
 次にCDBに接続し、以下のコマンドでパラメータを設定します。 
 PDBから実行はできませんので、CDBから設定を行ってください。
 
-.. code:: sql
+.. code-block:: sql
 
    SQL> alter system set wallet_root='/opt/oracle/admin/FREE/wallet' scope=spfile;
 
@@ -106,10 +106,11 @@ tde_configuration
 19cからは、分離モードがサポートされ、PDBごとに固有のキーストアを使用できるようになりました。
 
 
-サポートされるキーストアは以下の通りです。  
+サポートされるキーストアは以下の通りです。
+
 .. image:: ../_static/tde/サポートされるキーストア.png
 
-詳細は `こちら <https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html>`__ でご確認ください）
+詳細は `こちら <https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html>`__ でご確認ください。
 
 
 
@@ -140,10 +141,8 @@ CDBで設定を行った場合、PDBはCDBからその値を継承します。
 キーストアの作成
 ****************************
 
-暗号化鍵を格納するためのキーストアを作成します。  
-キーストアのマスター鍵管理はSYSKM権限以上が必要です。
-
-こちらのキーストア操作はSYSユーザーでも可能ですが、キーストア操作の専用ユーザーとしてsyskmユーザーが用意されています。 
+| 暗号化鍵を格納するためのキーストアを作成します。キーストアのマスター鍵管理はSYSKM権限以上が必要になります。
+| こちらのキーストア操作はSYSユーザーでも可能ですが、キーストア操作の専用ユーザーとしてsyskmユーザーが用意されています。 
 
 以下のコマンドでキーストアを作成します。デフォルトではPKCS#12ベースのキーストレージファイルに保存されます。（参考:  `ADMINISTER KEY MANAGEMENT <https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/ADMINISTER-KEY-MANAGEMENT.html>`__ ）
 
@@ -221,9 +220,9 @@ CDBで設定を行った場合、PDBはCDBからその値を継承します。
 
 
 
-| **参考**
-| `V$ENCRYPTION_WALLET <https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_WALLET.html>`__ : ウォレットの状態とTDEウォレットの場所に関する情報を表示  
-| `V$ENCRYPTION_KEYS <https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_KEYS.html>`__ : マスターキーの説明属性を表示
+**参考**
+ + `V$ENCRYPTION_WALLET <https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_WALLET.html>`__ : ウォレットの状態とTDEウォレットの場所に関する情報を表示  
+ + `V$ENCRYPTION_KEYS <https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_KEYS.html>`__ : マスターキーの説明属性を表示
 
 これで準備が整いましたので、次の手順から実際に表領域の暗号化を行っていきます。
 

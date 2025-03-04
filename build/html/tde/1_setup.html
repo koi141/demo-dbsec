@@ -370,17 +370,19 @@
                   
   <section id="tde">
 <h1>1. TDEの準備<a class="headerlink" href="#tde" title="Link to this heading">#</a></h1>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>TDEに関連する初期化パラメータ設定する</p></li>
 <li><p>キーストアおよびマスター暗号鍵を作成する</p></li>
 </ul>
+</aside>
 <section id="id1">
 <h2>初期化パラメータの確認<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>TDEに関連する初期化パラメータは2つあります。</p>
 <ul class="simple">
-<li><p>: <a class="reference external" href="https://docs.oracle.com/cd/F82042_01/refrn/WALLET_ROOT.html">wallet_root</a> :  暗号化キー（TDEキー）や証明書などを保存する場所を指定</p></li>
-<li><p>: <a class="reference external" href="https://docs.oracle.com/cd/F82042_01/refrn/TDE_CONFIGURATION.html">tde_configuration</a> : TDEの設定を定義</p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/cd/F82042_01/refrn/WALLET_ROOT.html">wallet_root</a> :  暗号化キー（TDEキー）や証明書などを保存する場所を指定</p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/cd/F82042_01/refrn/TDE_CONFIGURATION.html">tde_configuration</a> : TDEの設定を定義</p></li>
 </ul>
 <p>それぞれを確認していきましょう。</p>
 <section id="wallet-root">
@@ -412,7 +414,7 @@
 </section>
 <section id="id2">
 <h2>初期化パラメータの設定<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
-<p>それぞれのパラメータを設定していきます。</p>
+<p>では、各パラメータを設定していきます。</p>
 <section id="id3">
 <h3>wallet_root<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <p>TDEの暗号化キーはOracle Walletに保存されます。
@@ -446,9 +448,9 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 <h3>tde_configuration<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">tde_configuration</span></code> はTDEで使用されるキーストアの種類を設定します。
 19cからは、分離モードがサポートされ、PDBごとに固有のキーストアを使用できるようになりました。</p>
-<p>サポートされるキーストアは以下の通りです。
-.. image:: ../_static/tde/サポートされるキーストア.png</p>
-<p>詳細は <a class="reference external" href="https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html">こちら</a> でご確認ください）</p>
+<p>サポートされるキーストアは以下の通りです。</p>
+<img alt="../_images/%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%81%95%E3%82%8C%E3%82%8B%E3%82%AD%E3%83%BC%E3%82%B9%E3%83%88%E3%82%A2.png" src="../_images/%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%81%95%E3%82%8C%E3%82%8B%E3%82%AD%E3%83%BC%E3%82%B9%E3%83%88%E3%82%A2.png" />
+<p>詳細は <a class="reference external" href="https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html">こちら</a> でご確認ください。</p>
 <p>有効化すると設定した値によって <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> 配下に以下のディレクトリが作成されます。なお、設定のためには <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> を有効にしておく必要があります。</p>
 <dl class="field-list simple">
 <dt class="field-odd">FILE<span class="colon">:</span></dt>
@@ -473,9 +475,10 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 </section>
 <section id="id5">
 <h2>キーストアの作成<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
-<p>暗号化鍵を格納するためのキーストアを作成します。
-キーストアのマスター鍵管理はSYSKM権限以上が必要です。</p>
-<p>こちらのキーストア操作はSYSユーザーでも可能ですが、キーストア操作の専用ユーザーとしてsyskmユーザーが用意されています。</p>
+<div class="line-block">
+<div class="line">暗号化鍵を格納するためのキーストアを作成します。キーストアのマスター鍵管理はSYSKM権限以上が必要になります。</div>
+<div class="line">こちらのキーストア操作はSYSユーザーでも可能ですが、キーストア操作の専用ユーザーとしてsyskmユーザーが用意されています。</div>
+</div>
 <p>以下のコマンドでキーストアを作成します。デフォルトではPKCS#12ベースのキーストレージファイルに保存されます。（参考:  <a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/ADMINISTER-KEY-MANAGEMENT.html">ADMINISTER KEY MANAGEMENT</a> ）</p>
 <div class="literal-block-wrapper docutils container" id="id7">
 <div class="code-block-caption"><span class="caption-text">CDBで実行 (SYSユーザー or SYSKMユーザー)</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
@@ -543,11 +546,13 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 </pre></div>
 </div>
 </div>
-<div class="line-block">
-<div class="line"><strong>参考</strong></div>
-<div class="line"><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_WALLET.html">V$ENCRYPTION_WALLET</a> : ウォレットの状態とTDEウォレットの場所に関する情報を表示</div>
-<div class="line"><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_KEYS.html">V$ENCRYPTION_KEYS</a> : マスターキーの説明属性を表示</div>
-</div>
+<dl class="simple">
+<dt><strong>参考</strong></dt><dd><ul class="simple">
+<li><p><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_WALLET.html">V$ENCRYPTION_WALLET</a> : ウォレットの状態とTDEウォレットの場所に関する情報を表示</p></li>
+<li><p><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_KEYS.html">V$ENCRYPTION_KEYS</a> : マスターキーの説明属性を表示</p></li>
+</ul>
+</dd>
+</dl>
 <p>これで準備が整いましたので、次の手順から実際に表領域の暗号化を行っていきます。</p>
 </section>
 </section>

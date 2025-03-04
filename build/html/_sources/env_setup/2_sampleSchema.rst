@@ -2,9 +2,9 @@
 2. サンプルスキーマ（HR）を作成する
 ##########################################
 
-**実施内容**
+.. topic:: 実施内容
 
-+ サンプルスキーマ（HR）を作成する
+    + サンプルスキーマ（HR）を作成する
 
 
 **********************************
@@ -18,13 +18,13 @@
 
 まず、次のコマンドでスキーマファイルをダウンロードします。
 
-.. code:: bash
+.. code-block:: bash
 
     wget https://github.com/oracle-samples/db-sample-schemas/archive/refs/tags/v23.3.zip
 
 ダウンロードが完了したら、 ``v23.3.zip`` を解凍します。
 
-.. code:: bash
+.. code-block:: bash
 
     unzip v23.3.zip
 
@@ -41,7 +41,7 @@
 
 HRスキーマを作成するために、まずDBに接続します。
 
-.. code:: bash
+.. code-block:: bash
 
     # oracleユーザーにスイッチ
     $ sudo su - oracle
@@ -51,7 +51,7 @@ HRスキーマを作成するために、まずDBに接続します。
 
 次に、現在のコンテナを確認し、 ``FREEPDB1`` に接続します。
 
-.. code:: sql
+.. code-block:: sql
 
     -- pdbを確認し、freepdb1に接続
     SQL> show pdbs
@@ -84,7 +84,7 @@ HRスキーマを作成するために、まずDBに接続します。
 インストールが完了したら、HRスキーマが正しく作成されていることを確認します。
 
 
-.. code:: sql
+.. code-block:: sql
 
     SQL> select table_name from all_tables where owner = 'HR';
 
@@ -106,7 +106,7 @@ HRスキーマを作成するために、まずDBに接続します。
     7 rows selected.
 
 
-また、HRスキーマの構成は以下のようになっています。
+また、参考までですがHRスキーマの構成は以下のようになっています。
 
 .. image:: ../_static/db23ai/HR_OEスキーマ.gif
 
