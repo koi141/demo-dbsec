@@ -57,6 +57,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'sqlfirewall/5_setup-datasafe';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="6. Data SafeからSQL Firewallを設定する" href="6_policycheck-datasafe.html" />
+    <link rel="prev" title="4. SQL Firewallの動作を確認する" href="4_checkFirewall.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   <meta name="docsearch:version" content="" />
@@ -107,8 +109,6 @@
     <div class="bd-container__inner bd-page-width">
       
       
-      
-        
       
       <dialog id="pst-primary-sidebar-modal"></dialog>
       <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
@@ -178,11 +178,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../vpd/4_cleanup.html">4. VPDの設定を削除する</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">SQL Firewall:</span></p>
-<ul class="nav bd-sidenav">
+<ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. SQL Firewallの準備</a></li>
 <li class="toctree-l1"><a class="reference internal" href="2_learningTraffic.html">2. SQLをキャプチャして学習する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Data Safeの準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="6_policycheck-datasafe.html">6. Data SafeからSQL Firewallを設定する</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
 <ul class="nav bd-sidenav">
@@ -345,12 +347,9 @@
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafe-admin">DATASAFE$ADMINユーザーの作成</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DATASAFE$ADMINユーザーにロールを追加する</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafedb">DATASAFEにDBを登録する</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">プライベートエンドポイントの作成</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafe">DATASAFEユーザーの作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DATASAFEユーザーにロールを追加する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-safedb">Data SafeにDBを登録する</a></li>
 </ul>
             </nav>
         </div>
@@ -364,97 +363,186 @@
                   
   <section id="data-safe">
 <h1>5. Data Safeの準備<a class="headerlink" href="#data-safe" title="Link to this heading">#</a></h1>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
-<li><p>DATASAFE$ADMINユーザーを作成</p></li>
+<li><p>Data Safe用のDBユーザー&quot;DATASAFE$ADMIN&quot;を作成</p></li>
 <li><p>OCIコンソール</p></li>
 </ul>
-<p>basedbまたはADBの場合はDatasafeは基本無償でお使いいただけますが、コンピュート上に23aiがある場合は課金が発生しますのでご注意ください。
-この手順ではOCI上にDB23aiがあるものとしますが、basedbも同様の手順でいけるはずです。</p>
-<p>ADBの場合は少し手順が異なりますので、以下を参考にしてみてください</p>
+</aside>
+<div class="line-block">
+<div class="line">Oracle Data Safeは、Oracle Databaseのセキュリティを強化するためのクラウドサービスです。</div>
+<div class="line">エージェント不要で、OCIコンソールから以下のセキュリティ関連の操作を行えます。</div>
+</div>
 <ul class="simple">
-<li><p><a class="reference external" href="https://qiita.com/western24/items/b772d95148b8855b8bb0">https://qiita.com/western24/items/b772d95148b8855b8bb0</a></p></li>
-<li><p><a class="reference external" href="https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html">https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html</a></p></li>
+<li><p>セキュリティ評価（セキュリティ評価、ユーザー評価）</p></li>
+<li><p>ユーザーのアクティブ監視</p></li>
+<li><p>監査ログの可視化</p></li>
+<li><p>機密データの検出</p></li>
+<li><p>マスキングデータの作成</p></li>
+<li><p>SQLファイアウォールの設定・管理（ターゲットDBが23aiのときのみ）</p></li>
 </ul>
-<section id="datasafe-admin">
-<h2>DATASAFE$ADMINユーザーの作成<a class="headerlink" href="#datasafe-admin" title="Link to this heading">#</a></h2>
-<p>登録方法についてのサイトはこちら
-<a class="reference external" href="https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html">https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html</a></p>
-<p>DBにはdatasafe用のDBユーザーとして、DATASAFE_ADMINを作成。</p>
-<p>別に名前は自由だが、コンソールではDATASAFE$ADMINユーザーがデフォルトでセットされてるので。</p>
-<p>ADBにはDS$ADMINという名前ですでに作成されているので、作成する必要はない。
-ロックされているのでアンロックする必要はある。
-（ADBが登録解除されると再度ロックされる）</p>
-<dl class="simple">
-<dt>▼ DATASAFE_ADMINユーザーの作成例</dt><dd><p>CREATE USER DATASAFE$ADMIN identified by password
-DEFAULT TABLESPACE &quot;DATA&quot;
-TEMPORARY TABLESPACE &quot;TEMP&quot;;</p>
-</dd>
-</dl>
-<p>GRANT CONNECT, RESOURCE TO DATASAFE_ADMIN;
-:警告: SYSTEMまたはSYSAUXをデフォルト表領域として使用しないでください。 これらの表領域を使用している場合は、データをマスキングできません。</p>
-<p>PDBで作成</p>
-<p>CREATE USER DATASAFE$ADMIN identified by &lt;password&gt;
-DEFAULT TABLESPACE &quot;USERS&quot;
-TEMPORARY TABLESPACE &quot;TEMP&quot;;</p>
-<p>CREATE USER DATASAFE$ADMIN identified by Welcome1#Welcome1#
-DEFAULT TABLESPACE &quot;USERS&quot;
-TEMPORARY TABLESPACE &quot;TEMP&quot;;</p>
+<div class="line-block">
+<div class="line">Data Safeは、オンプレミスや他社クラウドのOracle Databaseも対象にできます。</div>
+<div class="line">また、OCIのDatabaseサービスを利用する場合、基本的に無償でつかえます。</div>
+</div>
+<p>関連リンク： <a class="reference external" href="https://speakerdeck.com/oracle4engineer/oracle-data-safefalseji-neng-gai-yao-tote-zheng">Data Safeの機能詳細 - Speaker Deck</a></p>
+<div class="line-block">
+<div class="line">本手順ではOCI上にDB23aiがのった仮想マシンに対しての登録ケースを想定していますが、OCIのDBクラウドサービスであるBaseDBもほぼ同様の手順で設定可能です。</div>
+<div class="line">Autonomous Databaseの場合は少し手順が異なりますので、以下を参考にしてみてください</div>
+</div>
+<ul class="simple">
+<li><p><a class="reference external" href="https://qiita.com/western24/items/b772d95148b8855b8bb0">Oracle Data SafeでAutonomous Databaseを管理する #Security - Qiita</a></p></li>
+</ul>
+<section id="datasafe">
+<h2>DATASAFEユーザーの作成<a class="headerlink" href="#datasafe" title="Link to this heading">#</a></h2>
+<p>Oracle公式の登録手順：<a class="reference external" href="https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html">https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/target-database-registration.html</a></p>
+<p>Data Safe用のDBユーザーとして <code class="docutils literal notranslate"><span class="pre">DATASAFE$ADMIN</span></code> を作成します。
+このユーザーの名前は自由ですが、OCIコンソールでの登録画面では <code class="docutils literal notranslate"><span class="pre">DATASAFE$ADMIN</span></code> ユーザー名がデフォルトでセットされてるため、この名前を使用しています。</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">ユーザーを作成（PDB）</span><a class="headerlink" href="#id2" title="Link to this code">#</a></div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">CREATE</span><span class="w"> </span><span class="k">USER</span><span class="w"> </span><span class="n">DATASAFE$ADMIN</span><span class="w"> </span><span class="n">IDENTIFIED</span><span class="w"> </span><span class="k">BY</span><span class="w"> </span><span class="ss">&quot;&lt;password&gt;&quot;</span>
+<span class="k">DEFAULT</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="ss">&quot;USERS&quot;</span>
+<span class="k">TEMPORARY</span><span class="w"> </span><span class="n">TABLESPACE</span><span class="w"> </span><span class="ss">&quot;TEMP&quot;</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">権限を付与（細かな権限はこの後別途スクリプトで付与します）</span><a class="headerlink" href="#id3" title="Link to this code">#</a></div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">GRANT</span><span class="w"> </span><span class="k">CONNECT</span><span class="p">,</span><span class="w"> </span><span class="n">RESOURCE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="n">DATASAFE$ADMIN</span><span class="p">;</span>
+</pre></div>
+</div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">重要</p>
+<div class="line-block">
+<div class="line">SYSTEMまたはSYSAUXをデフォルト表領域として使用しないでください。</div>
+<div class="line">これらの表領域を使用している場合は、データをマスキングできません。</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">注釈</p>
+<div class="line-block">
+<div class="line">Autonomous Database（以下ADB）の場合、 <code class="docutils literal notranslate"><span class="pre">DS$ADMIN</span></code> というユーザーがすでに作成されています。</div>
+<div class="line">そのため、別途作成する必要はありませんが、このユーザーはロックされているのでアンロックする必要があります。また、ADBが登録解除されると再度ロックされます。</div>
+</div>
+</div>
 </section>
 <section id="id1">
-<h2>DATASAFE$ADMINユーザーにロールを追加する<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>ロールを追加する
-ADBとno-ADBで追加するロールが違う
-<a class="reference external" href="https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/grant-roles-oracle-data-safe-service-account-your-target-database.html">https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/grant-roles-oracle-data-safe-service-account-your-target-database.html</a>
-Autonomous Databaseでは、DS$DATA_MASKING_ROLEを除くすべてのロールがすでにデフォルトで付与されています。</p>
-<img alt="../_images/%E3%83%AD%E3%83%BC%E3%83%AB.png" src="../_images/%E3%83%AD%E3%83%BC%E3%83%AB.png" />
-<p>non-ADBの場合、datasafe_privileges.sqlを流すことで、ロールを付与、または取り消しができる。
-このスクリプトはOCIコンソールのターゲットDBの登録画面から入手可能</p>
+<h2>DATASAFEユーザーにロールを追加する<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<p>ドキュメントリンク：<a class="reference external" href="https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/grant-roles-oracle-data-safe-service-account-your-target-database.html">https://docs.oracle.com/cd/E83857_01/paas/data-safe/admds/grant-roles-oracle-data-safe-service-account-your-target-database.html</a></p>
+<p>non-ADBの場合、スクリプト <code class="docutils literal notranslate"><span class="pre">datasafe_privileges.sql</span></code> を実行することで、ロールを付与または取り消しができます。
+このスクリプトはOCIコンソールの [メニューバー] → [Oracle Database] → [データ・セーフ - データベース・セキュリティ] と移動し、「ターゲットDBの登録」ボタンを選択した画面から入手することができます。</p>
 <img alt="../_images/%E6%A8%A9%E9%99%90%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%81%AEDL.png" src="../_images/%E6%A8%A9%E9%99%90%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E3%81%AEDL.png" />
-<div role="list" class="citation-list">
-<div class="citation" id="id2" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span>メニューバー<span class="fn-bracket">]</span></span>
-<p>→ [Oracle Database] → [データ・セーフ - データベース・セキュリティ]</p>
+<p>DBサーバーにスクリプトファイルを移し、SQL*Plusで接続。以下のコマンドで実行すると、上記画像のすべての権限を付与し、すべてのOracle Data Safe機能が使用可能になります。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">@</span><span class="n">datasafe_privileges</span><span class="p">.</span><span class="k">sql</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DataSafeユーザー</span><span class="o">&gt;</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="o">-</span><span class="k">VERBOSE</span>
+</pre></div>
+</div>
+<div class="admonition seealso">
+<p class="admonition-title">参考</p>
+<p>構文
+sqlスクリプトの構文は以下の通りです。</p>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="o">@</span><span class="n">datasafe_privileges</span><span class="p">.</span><span class="k">sql</span><span class="w"> </span><span class="o">&lt;</span><span class="n">DATASAFE_ADMIN</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="k">GRANT</span><span class="o">|</span><span class="k">REVOKE</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&lt;</span><span class="n">AUDIT_COLLECTION</span><span class="o">|</span><span class="n">AUDIT_SETTING</span><span class="o">|</span><span class="n">DATA_DISCOVERY</span><span class="o">|</span><span class="n">MASKING</span><span class="o">|</span><span class="n">ASSESSMENT</span><span class="o">|</span><span class="k">ALL</span><span class="o">&gt;</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="n">RDSORACLE</span><span class="p">][</span><span class="o">-</span><span class="k">VERBOSE</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>今回はData Safeのすべての機能を使用する権限を与えるため <code class="docutils literal notranslate"><span class="pre">ALL</span></code> を選択していますが、上記の通りData Safeの特定の機能に必要な権限だけを与えるもしくは剥奪することも可能です。</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">実行例</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="o">@</span><span class="n">datasafe_privileges</span><span class="p">.</span><span class="k">sql</span><span class="w"> </span><span class="n">DATASAFE$ADMIN</span><span class="w"> </span><span class="k">GRANT</span><span class="w"> </span><span class="k">ALL</span><span class="w"> </span><span class="o">-</span><span class="k">VERBOSE</span>
+<span class="n">Enter</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">USERNAME</span><span class="w"> </span><span class="p">(</span><span class="k">case</span><span class="w"> </span><span class="k">sensitive</span><span class="w"> </span><span class="n">matching</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">username</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">dba_users</span><span class="p">)</span>
+<span class="n">Setting</span><span class="w"> </span><span class="n">USERNAME</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="n">DATASAFE$ADMIN</span>
+<span class="n">Enter</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="p">(</span><span class="k">grant</span><span class="o">/</span><span class="k">revoke</span><span class="p">)</span>
+<span class="n">Setting</span><span class="w"> </span><span class="k">TYPE</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">GRANT</span>
+<span class="n">Enter</span><span class="w"> </span><span class="n">value</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">MODE</span><span class="w"> </span><span class="p">(</span><span class="n">audit_collection</span><span class="o">/</span><span class="n">audit_setting</span><span class="o">/</span><span class="n">data_discovery</span><span class="o">/</span><span class="n">masking</span><span class="o">/</span><span class="n">assessment</span><span class="o">/</span><span class="n">sql_firewall</span><span class="o">/</span><span class="k">all</span><span class="p">)</span>
+<span class="n">Setting</span><span class="w"> </span><span class="k">MODE</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="k">ALL</span>
+
+<span class="n">Granting</span><span class="w"> </span><span class="n">AUDIT_COLLECTION</span><span class="w"> </span><span class="k">privileges</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="ss">&quot;DATASAFE$ADMIN&quot;</span><span class="w"> </span><span class="p">...</span>
+<span class="k">CREATE</span><span class="w"> </span><span class="k">ROLE</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">CREATE</span><span class="w"> </span><span class="k">SESSION</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">AUDIT_VIEWER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">DBA_AUDIT_MGMT_CLEANUP_JOBS</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">V_$PWFILE_USERS</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">DBA_TABLES</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">DUAL</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">V_$OPTION</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">DEFAULT_JOB_CLASS</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">DBMS_OUTPUT</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">READ</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">STMT_AUDIT_OPTION_MAP</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">EXECUTE</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">SYS</span><span class="p">.</span><span class="n">XMLTYPE</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_AUDIT_COLLECTION&quot;</span>
+<span class="p">...</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">AUDIT_VIEWER</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_ASSESSMENT&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="n">CAPTURE_ADMIN</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_ASSESSMENT&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">ON</span><span class="w"> </span><span class="n">AUDSYS</span><span class="p">.</span><span class="n">AUD$UNIFIED</span><span class="w"> </span><span class="k">TO</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_ASSESSMENT&quot;</span>
+<span class="k">GRANT</span><span class="w"> </span><span class="ss">&quot;ORA_DSCS_ASSESSMENT&quot;</span><span class="w"> </span><span class="k">to</span><span class="w"> </span><span class="ss">&quot;DATASAFE$ADMIN&quot;</span>
+<span class="n">Disconnected</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">Oracle</span><span class="w"> </span><span class="k">Database</span><span class="w"> </span><span class="mi">23</span><span class="n">ai</span><span class="w"> </span><span class="k">Free</span><span class="w"> </span><span class="n">Release</span><span class="w"> </span><span class="mi">23</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">0</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">Develop</span><span class="p">,</span><span class="w"> </span><span class="n">Learn</span><span class="p">,</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">Run</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="k">Free</span>
+<span class="k">Version</span><span class="w"> </span><span class="mi">23</span><span class="p">.</span><span class="mi">6</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span><span class="mi">24</span><span class="p">.</span><span class="mi">10</span>
+</pre></div>
 </div>
 </div>
-<p>DBサーバーにスクリプトファイルを移し、以下の感じで実行すると、
-すべての権限を付与し、すべてのOracle Data Safe機能が使用可能になる。</p>
-<p>&#64;datasafe_privileges.sql &lt;DATASAFEユーザー&gt; GRANT ALL -VERBOSE</p>
-<p>SQL&gt; &#64;datasafe_privileges.sql DATASAFE$ADMIN GRANT ALL -VERBOSE
-Enter value for USERNAME (case sensitive matching the username from dba_users)
-Setting USERNAME to DATASAFE$ADMIN
-Enter value for TYPE (grant/revoke)
-Setting TYPE to GRANT
-Enter value for MODE (audit_collection/audit_setting/data_discovery/masking/assessment/sql_firewall/all)
-Setting MODE to ALL</p>
-<p>Granting AUDIT_COLLECTION privileges to &quot;DATASAFE$ADMIN&quot; ...
-CREATE ROLE &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT CREATE SESSION to &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT AUDIT_VIEWER TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT READ ON SYS.DBA_AUDIT_MGMT_CLEANUP_JOBS TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT READ ON SYS.V_$PWFILE_USERS TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT READ ON SYS.DBA_TABLES TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT SELECT ON SYS.DUAL TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT READ ON SYS.V_$OPTION TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT EXECUTE ON SYS.DEFAULT_JOB_CLASS TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT EXECUTE ON SYS.DBMS_OUTPUT TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT READ ON SYS.STMT_AUDIT_OPTION_MAP TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-GRANT EXECUTE ON SYS.XMLTYPE TO &quot;ORA_DSCS_AUDIT_COLLECTION&quot;
-...
-GRANT AUDIT_VIEWER TO &quot;ORA_DSCS_ASSESSMENT&quot;
-GRANT CAPTURE_ADMIN TO &quot;ORA_DSCS_ASSESSMENT&quot;
-GRANT SELECT ON AUDSYS.AUD$UNIFIED TO &quot;ORA_DSCS_ASSESSMENT&quot;
-GRANT &quot;ORA_DSCS_ASSESSMENT&quot; to &quot;DATASAFE$ADMIN&quot;
-Disconnected from Oracle Database 23ai Free Release 23.0.0.0.0 - Develop, Learn, and Run for Free
-Version 23.6.0.24.10</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<div class="line-block">
+<div class="line">ADBとnon-ADBで追加されるロールが異なります。</div>
+<div class="line">また、ADBでは <code class="docutils literal notranslate"><span class="pre">DS$DATA_MASKING_ROLE</span></code> 以外のすべてのロールがすでにデフォルトで付与されています。</div>
+</div>
+<figure class="align-default">
+<img alt="../_images/%E3%83%AD%E3%83%BC%E3%83%AB.png" src="../_images/%E3%83%AD%E3%83%BC%E3%83%AB.png" />
+</figure>
+</div>
 </section>
-<section id="datasafedb">
-<h2>DATASAFEにDBを登録する<a class="headerlink" href="#datasafedb" title="Link to this heading">#</a></h2>
-<section id="id3">
-<h3>プライベートエンドポイントの作成<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
-<p>[データ・セーフ] → [設定] → [ターゲット・データベース] → [プライベート・エンドポイント]
-からプライベートエンドポイントを作成します。</p>
-</section>
+<section id="data-safedb">
+<h2>Data SafeにDBを登録する<a class="headerlink" href="#data-safedb" title="Link to this heading">#</a></h2>
+<p>Data Safeの画面より、該当するターゲットDBの「ウィザードの起動」を選択します。今回はコンピュート上の23ai FREEをターゲットとするので、「コンピュート上のOracleデータベース」を選択した手順となります。</p>
+<figure class="align-default">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_0.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_0.png" />
+</figure>
+<div class="admonition hint">
+<p class="admonition-title">ヒント</p>
+<p>「ウィザードによるデータベースの登録」からDBを登録すると、プライベートエンドポイントの作成とセキュリティ・リストまたはネットワーク・セキュリティ・グループの設定を同時に行うことができます。</p>
+</div>
+<p>ターゲット・データベース情報を入力する画面では以下の項目を入力します。</p>
+<dl class="field-list simple">
+<dt class="field-odd">サービス名<span class="colon">:</span></dt>
+<dd class="field-odd"><p>FREEPDB1</p>
+</dd>
+<dt class="field-even">ポート番号<span class="colon">:</span></dt>
+<dd class="field-even"><p>1521</p>
+</dd>
+</dl>
+<figure class="align-default">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_1.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_1.png" />
+</figure>
+<div class="line-block">
+<div class="line"><br /></div>
+<div class="line">続いての画面ではDBとData Safeの接続口、プライベートエンドポイントを作成する画面となります。プライベート・エンドポイントは1つのVCNにつき1つしか作成できないため、すでに作成されている場合はそちらを使用してください。</div>
+<div class="line">作成していない場合は「既存のプライベート・エンドポイントを使用しますか。」で「いいえ」を選択することで、この画面から直接作成することができます。</div>
+</div>
+<figure class="align-default" id="id5">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_2.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_2.png" />
+<figcaption>
+<p><span class="caption-text">すでにプライベートエンドポイントがある時の画面</span><a class="headerlink" href="#id5" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<figure class="align-default" id="id6">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_2_PE.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_2_PE.png" />
+<figcaption>
+<p><span class="caption-text">新規にプライベートエンドポイントを作成する時の画面</span><a class="headerlink" href="#id6" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>次にファイアウォール（セキュリティ・リストまたはネットワーク・セキュリティ・グループ）の設定を行うことができます。</p>
+<figure class="align-default">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_3.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_3.png" />
+</figure>
+<p>最後に項目を確認し、「登録」をクリックします。</p>
+<figure class="align-default">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_4.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_4.png" />
+</figure>
+<p>そして無事登録され、ステータスが「ACTIVE」になっていることを確認します。</p>
+<figure class="align-default">
+<img alt="../_images/wz_DB%E7%99%BB%E9%8C%B2_5.png" src="../_images/wz_DB%E7%99%BB%E9%8C%B2_5.png" />
+</figure>
+<p>以上でData SafeへのDB登録は終了です。</p>
 </section>
 </section>
 
@@ -469,6 +557,24 @@ Version 23.6.0.24.10</p>
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="4_checkFirewall.html"
+       title="前のページ">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">4. SQL Firewallの動作を確認する</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="6_policycheck-datasafe.html"
+       title="次ページ">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">6. Data SafeからSQL Firewallを設定する</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -486,12 +592,9 @@ Version 23.6.0.24.10</p>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafe-admin">DATASAFE$ADMINユーザーの作成</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DATASAFE$ADMINユーザーにロールを追加する</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafedb">DATASAFEにDBを登録する</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">プライベートエンドポイントの作成</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#datasafe">DATASAFEユーザーの作成</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">DATASAFEユーザーにロールを追加する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#data-safedb">Data SafeにDBを登録する</a></li>
 </ul>
   </nav></div>
 
