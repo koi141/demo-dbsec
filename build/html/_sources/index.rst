@@ -9,15 +9,16 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    | このサイトで紹介する手順では、実行結果の一部を見やすくするために整形や省略を行っています。
    | そのため、実際の結果とは若干異なる場合がありますので、ご了承ください。
 
+
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: 環境準備:
 
    /env_setup/1_db23ai
    /env_setup/2_sampleSchema
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: TDE（透過的データ暗号化）:
    
    /tde/1_setup
@@ -25,14 +26,14 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /tde/3_autoWalletOpen
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: ネイティブ・ネットワーク暗号化:
    
    /nne/1_setup
    /nne/2_encryption
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Data Redaction:
    
    /redact/1_setup
@@ -40,7 +41,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /redact/3_note
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Virtual Private Database:
    
    /vpd/1_rowControl
@@ -50,7 +51,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
 
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: SQL Firewall:
    
    /sqlfirewall/1_setup
@@ -60,7 +61,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /sqlfirewall/5_setup-datasafe
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Database Vault:
    
    /dv/1_setup
@@ -71,7 +72,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /dv/99_checkComponent
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Oracle Label Security:
    
    /ols/1_setup

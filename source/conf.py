@@ -17,7 +17,13 @@ html_title = 'Oracle DB Sec Tutorial'
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = ['sphinxcontrib.seqdiag', 'sphinx_togglebutton', 'sphinx.ext.githubpages', 'sphinx_copybutton']
+extensions = [
+    'sphinxcontrib.seqdiag',
+    'sphinx_togglebutton',
+    'sphinx.ext.githubpages',
+    'sphinx_copybutton',
+    'sphinx_design'
+    ]
 
 templates_path = ['_templates']
 exclude_patterns = []
