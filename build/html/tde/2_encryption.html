@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>2. TDE 表領域を暗号化する &#8212; Oracle DB Sec Tutorial</title>
+    <title>2. 表領域の暗号化を行う &#8212; Oracle DB Sec Tutorial</title>
   
   
   
@@ -56,7 +56,7 @@
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
     <link rel="next" title="3. キーストアを自動でオープンするようにする" href="3_autoWalletOpen.html" />
-    <link rel="prev" title="1. TDEの準備" href="1_setup.html" />
+    <link rel="prev" title="1. TDEの事前準備" href="1_setup.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. TDEの準備</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. TDEの事前準備</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dv/1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/4_twoPersonIntegrity.html">4. 二人制整合性を使用してみる</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -342,7 +352,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>2. TDE 表領域を暗号化する</h1>
+    <h1>2. 表領域の暗号化を行う</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -352,9 +362,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">データファイルの確認</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">表領域の暗号化を行う</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">暗号化された表領域を復号する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">データファイルの確認</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">表領域の暗号化を行う</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">暗号化された表領域を復号する</a></li>
 </ul>
             </nav>
         </div>
@@ -366,8 +376,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section id="tde">
-<h1>2. TDE 表領域を暗号化する<a class="headerlink" href="#tde" title="Link to this heading">#</a></h1>
+  <section id="id1">
+<h1>2. 表領域の暗号化を行う<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <aside class="topic">
 <p class="topic-title">実施内容</p>
 <ul class="simple">
@@ -375,11 +385,11 @@ document.write(`
 <li><p>OSコマンドでデータファイルを開き、データが暗号化されていることを確認する</p></li>
 </ul>
 </aside>
-<section id="id1">
-<h2>データファイルの確認<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>データファイルの確認<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>作成したHRスキーマを使用します。手順ではUSERS表領域に作成していますが、念のため実際に確認を行います。</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="w"> </span><span class="c1">-- 結果をcsv形式で出力</span>
 <span class="w"> </span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">markup</span><span class="w"> </span><span class="n">csv</span><span class="w"> </span><span class="k">on</span>
 
@@ -415,11 +425,11 @@ document.write(`
 </div>
 <p>このように、TDEで暗号化されていない場合、stringsコマンドでデータの内容が確認できてしまうことが分かります。</p>
 </section>
-<section id="id2">
-<h2>表領域の暗号化を行う<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
+<section id="id3">
+<h2>表領域の暗号化を行う<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
 <p>次に、HRスキーマが格納されるUSERS表領域を暗号化します。</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 実行時間を計測</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">timing</span><span class="w"> </span><span class="k">on</span>
 
@@ -469,11 +479,11 @@ document.write(`
 </pre></div>
 </div>
 </section>
-<section id="id3">
-<h2>暗号化された表領域を復号する<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
+<section id="id4">
+<h2>暗号化された表領域を復号する<a class="headerlink" href="#id4" title="Link to this heading">#</a></h2>
 <p>オンラインで暗号化を行いましたが、同様にオンラインで復号も行うことができます。</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- USERS表領域の復号を行う</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="n">tablespace</span><span class="w"> </span><span class="n">users</span><span class="w"> </span><span class="n">encryption</span><span class="w"> </span><span class="n">online</span><span class="w"> </span><span class="n">decrypt</span><span class="p">;</span>
 
@@ -495,7 +505,7 @@ document.write(`
 </div>
 <div class="line-block">
 <div class="line">復号後、データファイルの内容が再び人間が読める形式で表示されることが確認できます。</div>
-<div class="line">また他の端末にて、オンライン暗号化または復号処理を実行中に <code class="docutils literal notranslate"><span class="pre">strings</span></code> コマンドを実行することで、暗号化・復号処理中のファイルの状況を確認することができます。</div>
+<div class="line">また他の端末にて、オンライン暗号化または復号処理を実行中に <code class="docutils literal notranslate"><span class="pre">ls</span></code> コマンドを実行することで、暗号化・復号処理中のファイルの状況を確認することができます。</div>
 </div>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>ls<span class="w"> </span>-l
 total<span class="w"> </span><span class="m">1077780</span>
@@ -531,7 +541,7 @@ total<span class="w"> </span><span class="m">1077780</span>
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title">1. TDEの準備</p>
+        <p class="prev-next-title">1. TDEの事前準備</p>
       </div>
     </a>
     <a class="right-next"
@@ -559,9 +569,9 @@ total<span class="w"> </span><span class="m">1077780</span>
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">データファイルの確認</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">表領域の暗号化を行う</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">暗号化された表領域を復号する</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">データファイルの確認</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">表領域の暗号化を行う</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">暗号化された表領域を復号する</a></li>
 </ul>
   </nav></div>
 

@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>1. TDEの準備 &#8212; Oracle DB Sec Tutorial</title>
+    <title>1. TDEの事前準備 &#8212; Oracle DB Sec Tutorial</title>
   
   
   
@@ -55,8 +55,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'tde/1_setup';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
-    <link rel="next" title="2. TDE 表領域を暗号化する" href="2_encryption.html" />
-    <link rel="prev" title="2. サンプルスキーマ（HR）を作成する" href="../env_setup/2_sampleSchema.html" />
+    <link rel="next" title="2. 表領域の暗号化を行う" href="2_encryption.html" />
+    <link rel="prev" title="0. イントロダクション" href="0_introduction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="current nav bd-sidenav">
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. TDEの準備</a></li>
-<li class="toctree-l1"><a class="reference internal" href="2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. TDEの事前準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_encryption.html">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,15 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dv/1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/4_twoPersonIntegrity.html">4. 二人制整合性を使用してみる</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../dv/99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -342,7 +352,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>1. TDEの準備</h1>
+    <h1>1. TDEの事前準備</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -376,7 +386,7 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="tde">
-<h1>1. TDEの準備<a class="headerlink" href="#tde" title="Link to this heading">#</a></h1>
+<h1>1. TDEの事前準備<a class="headerlink" href="#tde" title="Link to this heading">#</a></h1>
 <aside class="topic">
 <p class="topic-title">実施内容</p>
 <ul class="simple">
@@ -427,7 +437,7 @@ document.write(`
 <p>TDEの暗号化キーはOracle Walletに保存されます。
 <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> でこのWalletを格納するディレクトリのパスを指定します。</p>
 <p>ディレクトリは任意の場所に指定できますが、ここでは <code class="docutils literal notranslate"><span class="pre">/opt/oracle/admin/FREE/wallet</span></code> を指定します。
-なお、walletディレクトリは作成されていませんので、このディレクトリは事前に作成しておきます。</p>
+この wallet ディレクトリは作成されていませんので、事前に作成しておきます。</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>$<span class="w"> </span>mkdir<span class="w"> </span>-p<span class="w"> </span>/opt/oracle/admin/FREE/wallet
 </pre></div>
 </div>
@@ -454,11 +464,11 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 <section id="id4">
 <h3>tde_configuration<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <p><code class="docutils literal notranslate"><span class="pre">tde_configuration</span></code> はTDEで使用されるキーストアの種類を設定します。
-19cからは、分離モードがサポートされ、PDBごとに固有のキーストアを使用できるようになりました。</p>
+19cからは分離モードがサポートされ、PDBごとに固有のキーストアを使用できるようになりました。</p>
 <p>サポートされるキーストアは以下の通りです。</p>
 <img alt="../_images/%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%81%95%E3%82%8C%E3%82%8B%E3%82%AD%E3%83%BC%E3%82%B9%E3%83%88%E3%82%A2.png" src="../_images/%E3%82%B5%E3%83%9D%E3%83%BC%E3%83%88%E3%81%95%E3%82%8C%E3%82%8B%E3%82%AD%E3%83%BC%E3%82%B9%E3%83%88%E3%82%A2.png" />
 <p>詳細は <a class="reference external" href="https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html">こちら</a> でご確認ください。</p>
-<p>有効化すると設定した値によって <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> 配下に以下のディレクトリが作成されます。なお、設定のためには <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> を有効にしておく必要があります。</p>
+<p>有効化すると設定した値によって <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> 配下に以下のディレクトリが作成されます。そのため、このパラメータ設定のためには <code class="docutils literal notranslate"><span class="pre">wallet_root</span></code> を先に有効にしておく必要があります。</p>
 <dl class="field-list simple">
 <dt class="field-odd">FILE<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">&lt;WALLET_ROOT&gt;/tde</span></code></p>
@@ -467,7 +477,7 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 <dd class="field-even"><p><code class="docutils literal notranslate"><span class="pre">&lt;WALLET_ROOT&gt;/okv</span></code></p>
 </dd>
 </dl>
-<p>今回はデモ用として、DBサーバーにキーストアを設置します。</p>
+<p>今回はデモですので、DBサーバーにキーストアを設置することとします。</p>
 <p>以下のコマンドで <code class="docutils literal notranslate"><span class="pre">tde_configuration</span></code> を設定します。</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">alter</span><span class="w"> </span><span class="k">system</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">tde_configuration</span><span class="o">=</span><span class="s1">&#39;keystore_configuration=file&#39;</span><span class="w"> </span><span class="k">scope</span><span class="o">=</span><span class="k">both</span><span class="p">;</span>
 
@@ -484,7 +494,7 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 <h2>キーストアの作成<a class="headerlink" href="#id5" title="Link to this heading">#</a></h2>
 <div class="line-block">
 <div class="line">暗号化鍵を格納するためのキーストアを作成します。キーストアのマスター鍵管理はSYSKM権限以上が必要になります。</div>
-<div class="line">こちらのキーストア操作はSYSユーザーでも可能ですが、キーストア操作の専用ユーザーとしてsyskmユーザーが用意されています。</div>
+<div class="line">キーストア操作の専用ユーザーとしてsyskmユーザーも用意されていますが、SYSユーザーでも可能です。どちらかを使用してください。</div>
 </div>
 <p>以下のコマンドでキーストアを作成します。デフォルトではPKCS#12ベースのキーストレージファイルに保存されます。（参考:  <a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/sqlrf/ADMINISTER-KEY-MANAGEMENT.html">ADMINISTER KEY MANAGEMENT</a> ）</p>
 <div class="literal-block-wrapper docutils container" id="id7">
@@ -511,8 +521,8 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 </div>
 </div>
 <div class="line-block">
-<div class="line">こちらの結果からわかる通り、キーストアの状態がCLOSEDとなっています。この状態ではキーストアは使用できませんので、OPENにする必要があります。</div>
-<div class="line">次に、キーストアを OPEN にするためのコマンドを実行します。</div>
+<div class="line">こちらの結果からわかる通り、キーストアの状態が <cite>CLOSED`</cite> となっています。</div>
+<div class="line">この状態ではキーストアは使用できませんので、次のコマンドにてキーストアをOPENにします。</div>
 </div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">administer</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="n">management</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">keystore</span><span class="w"> </span><span class="k">open</span><span class="w"> </span><span class="n">identified</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">OracleKM123</span><span class="o">#</span><span class="p">;</span>
 
@@ -522,13 +532,12 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 <span class="ss">&quot;FILE&quot;</span><span class="w">    </span><span class="p">,</span><span class="ss">&quot;/opt/oracle/admin/FREE/wallet/tde/&quot;</span><span class="p">,</span><span class="ss">&quot;OPEN_NO_MASTER_KEY&quot;</span><span class="p">,</span><span class="ss">&quot;PASSWORD&quot;</span><span class="w">   </span><span class="p">,</span><span class="ss">&quot;SINGLE&quot;</span><span class="w">      </span><span class="p">,</span><span class="ss">&quot;NONE&quot;</span><span class="w">         </span><span class="p">,</span><span class="ss">&quot;UNDEFINED&quot;</span><span class="w">      </span><span class="p">,</span><span class="mi">1</span>
 </pre></div>
 </div>
-<p>このように、STATUS列がOPEN_NO_MASTER_KEYに変わり、キーストアが正常に開かれたことが確認できます。
+<p>このように、STATUS列が <cite>OPEN_NO_MASTER_KEY</cite> に変わり、キーストアが正常に開かれたことが確認できます。
 これで、キーストアを使用して暗号化操作を行う準備が整いました。</p>
 </section>
 <section id="id6">
 <h2>マスター暗号鍵の作成<a class="headerlink" href="#id6" title="Link to this heading">#</a></h2>
-<p>続いてマスター暗号鍵を作成します。
-今回はCDB、PDBを一括で暗号化するために統合モードで鍵を作成します。</p>
+<p>続いてマスター暗号鍵を作成します。今回はCDB、PDBを一括で暗号化するために統合モードで鍵を作成します。</p>
 <div class="literal-block-wrapper docutils container" id="id9">
 <div class="code-block-caption"><span class="caption-text">CDBで実行 (SYSユーザー or SYSKMユーザー)</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">administer</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="n">management</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="k">key</span><span class="w"> </span><span class="k">using</span><span class="w"> </span><span class="n">tag</span><span class="w"> </span><span class="s1">&#39;v1.0_MEK_AllContainer&#39;</span><span class="w"> </span><span class="n">identified</span><span class="w"> </span><span class="k">by</span><span class="w"> </span><span class="n">OracleKM123</span><span class="o">#</span><span class="w"> </span><span class="k">with</span><span class="w"> </span><span class="n">backup</span><span class="w"> </span><span class="n">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">ALL</span><span class="p">;</span>
@@ -553,13 +562,13 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
 </pre></div>
 </div>
 </div>
-<dl class="simple">
-<dt><strong>参考</strong></dt><dd><ul class="simple">
+<aside class="topic">
+<p class="topic-title">参考</p>
+<ul class="simple">
 <li><p><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_WALLET.html">V$ENCRYPTION_WALLET</a> : ウォレットの状態とTDEウォレットの場所に関する情報を表示</p></li>
 <li><p><a class="reference external" href="https://docs.oracle.com/en/database/oracle/oracle-database/23/refrn/V-ENCRYPTION_KEYS.html">V$ENCRYPTION_KEYS</a> : マスターキーの説明属性を表示</p></li>
 </ul>
-</dd>
-</dl>
+</aside>
 <p>これで準備が整いましたので、次の手順から実際に表領域の暗号化を行っていきます。</p>
 </section>
 </section>
@@ -576,12 +585,12 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
                   
 <div class="prev-next-area">
     <a class="left-prev"
-       href="../env_setup/2_sampleSchema.html"
+       href="0_introduction.html"
        title="previous page">
       <i class="fa-solid fa-angle-left"></i>
       <div class="prev-next-info">
         <p class="prev-next-subtitle">前へ</p>
-        <p class="prev-next-title">2. サンプルスキーマ（HR）を作成する</p>
+        <p class="prev-next-title">0. イントロダクション</p>
       </div>
     </a>
     <a class="right-next"
@@ -589,7 +598,7 @@ PDBから実行はできませんので、CDBから設定を行ってくださ�
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">次へ</p>
-        <p class="prev-next-title">2. TDE 表領域を暗号化する</p>
+        <p class="prev-next-title">2. 表領域の暗号化を行う</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>

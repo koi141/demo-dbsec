@@ -9,7 +9,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    | このサイトで紹介する手順では、実行結果の一部を見やすくするために整形や省略を行っています。
    | そのため、実際の結果とは若干異なる場合がありますので、ご了承ください。
 
-
+|
 .. toctree::
    :maxdepth: 1
    :caption: 環境準備:
@@ -17,13 +17,18 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /env_setup/1_db23ai
    /env_setup/2_sampleSchema
 
+|
+
 .. toctree::
    :maxdepth: 1
    :caption: TDE（透過的データ暗号化）:
    
+   /tde/0_introduction.rst
    /tde/1_setup
    /tde/2_encryption
    /tde/3_autoWalletOpen
+
+|
 
 .. toctree::
    :maxdepth: 1
@@ -32,6 +37,8 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /nne/1_setup
    /nne/2_encryption
 
+|
+
 .. toctree::
    :maxdepth: 1
    :caption: Data Redaction:
@@ -39,6 +46,8 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /redact/1_setup
    /redact/2_redaction
    /redact/3_note
+
+|
 
 .. toctree::
    :maxdepth: 1
@@ -49,6 +58,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /vpd/3_clientIdentifier
    /vpd/4_cleanup
 
+|
 
 .. toctree::
    :maxdepth: 1
@@ -60,6 +70,8 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /sqlfirewall/4_checkFirewall
    /sqlfirewall/5_setup-datasafe
 
+|
+
 .. toctree::
    :maxdepth: 1
    :caption: Database Vault:
@@ -70,6 +82,8 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    /dv/4_twoPersonIntegrity
    /dv/5_cleanup
    /dv/99_checkComponent
+
+| 
 
 .. toctree::
    :maxdepth: 1
