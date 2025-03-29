@@ -55,6 +55,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'dv/1_setup';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="2. Database Vaultの準備 (レルムの作成と認可)" href="2_authRealm.html" />
+    <link rel="prev" title="0. イントロダクション" href="0_introduction.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -117,8 +119,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの事前準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_twoPersonIntegrity.html">4. 二人制整合性を設定・体験する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -370,8 +381,9 @@ document.write(`
                   
   <section id="database-vault">
 <h1>1. Database Vaultの有効化<a class="headerlink" href="#database-vault" title="Link to this heading">#</a></h1>
-<p>Database Vault (DB Vault) の有効化、管理者ユーザーの作成、および各種構成作業を実施します。</p>
-<p><strong>実施内容</strong></p>
+<p>Database Vaultの有効化、管理者ユーザーの作成、および各種構成作業を実施します。</p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>Database Vault の構成前確認</p></li>
 <li><p>Database Vault 管理者ユーザーの作成</p></li>
@@ -379,16 +391,15 @@ document.write(`
 <li><p>Database Vault の有効化</p></li>
 <li><p>PDBでの構成と有効化</p></li>
 </ul>
+</aside>
 <section id="id1">
 <h2>Database Vault の構成前確認<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
-<p>Oracle Database Vaultを有効化する前に、Database VaultおよびOracle Label Security(OLS)のための構築スクリプトを実行する必要があります。
-DB Vault構成時にOLSが有効化されます。別にOLSを使用する場合を除いて、OLSのライセンスは必要ありません。</p>
-<p>また、マルチテナントでの使用の場合、CDBでDB Vaultを構成および有効化した後で、PDBでも同様の操作を行う必要があります。</p>
-<p>CDBルートでDV_OWNERロールとDV_ACCTMGRロールを割り当てられた共通ユーザーも、PDBで同じロールを持つことができます。
-PDBでは、同じ共通ユーザーを使用してDatabase Vaultを構成および有効化することも、別のPDBローカル・ユーザーを使用することもできます。DV_ACCTMGRロールは、CDBルートの共通ユーザーに共通に付与されます。
-Database VaultをCDBルートに構成および有効化するときに、DV_OWNERをローカルに、またはCDBルート共通ユーザーに共通に付与できます。
-DV_OWNERを共通ユーザーにローカルに付与すると、共通DV_OWNERユーザーは、どのPDBでもこのロールを使用できなくなります。</p>
-<p>今回はDV管理者としては共通ユーザを使用することとします。</p>
+<p>Oracle Database Vault を有効化する前に、Database Vault および Oracle Label Security (以下OLS) の構築スクリプトを実行する必要があります。</p>
+<div class="admonition- admonition">
+<p class="admonition-title">注意</p>
+<p>Database Vaultは内部的にOLSのライブラリを使用しているため、構成時にOLSも自動で有効化されますが、OLSを別途使用しない限り、OLSのライセンスは不要です。</p>
+</div>
+<p>また、マルチテナントでの使用の場合、CDBでDatabase Vaultを構成および有効化した後で、PDBでも同様に有効化操作を行う必要があります。</p>
 <p>CDB$ROOTに接続し、Database Vaultの構成および有効化状況を確認します。</p>
 <div class="literal-block-wrapper docutils container" id="id4">
 <div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
@@ -407,17 +418,29 @@ DV_OWNERを共通ユーザーにローカルに付与すると、共通DV_OWNER�
 </pre></div>
 </div>
 </div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </section>
 <section id="cdb-root-database-vault">
 <h2>(CDB$ROOT) Database Vault管理者ユーザーの作成<a class="headerlink" href="#cdb-root-database-vault" title="Link to this heading">#</a></h2>
-<p>Database Vaultを有効化する際、DB Vault所有者 (DV_OWNERロール) と アカウント管理者 (DV_ACCTMGRロール) の2つのアカウントを指定する必要があります。
-ここでは以下のユーザーを用いるため、2つのユーザーをそれぞれ作成します。</p>
+<div class="line-block">
+<div class="line">Database Vaultを有効化する際、管理者ユーザーとして Database Vault所有者 (DV_OWNERロール) と アカウント管理者 (DV_ACCTMGRロール) の2つのアカウントを指定する必要があります。</div>
+<div class="line">ここでは以下のユーザーを用いるため、2つのユーザーをそれぞれ作成します。今後の手順でこの二人のユーザーはよく使いますので、各セッションを別端末などで用意しておくと今後の作業がスムーズに進めやすいかと思います。</div>
+</div>
 <ul class="simple">
-<li><p><strong>C##DVOWNER</strong>: Database Vaultのロールや構成を管理します。</p></li>
-<li><p><strong>C##DVACCTMGR</strong>: データベースのユーザーアカウントを管理します。</p></li>
+<li><p><strong>C##DVOWNER</strong> ユーザー: Database Vaultのロールや構成を管理します。</p></li>
+<li><p><strong>C##DVACCTMGR</strong> ユーザー: データベースのユーザーアカウントを管理します。</p></li>
 </ul>
-<p>PDBで有効化する際も管理者アカウントを指定する必要がありますが、CDBの共通ユーザを指定することも可能のため、ここでは共通ユーザーをPDBでも繰り返し使用します。</p>
-<p>念のため、共通ユーザの接頭辞を確認します。</p>
+<div class="line-block">
+<div class="line">CDBルートで DV_OWNER ロールと DV_ACCTMGR ロールを付与された共通ユーザーは、PDBでも同じロールを持つことができるように構成できます。</div>
+<div class="line">DV_ACCTMGR ロールは CDBルートの共通ユーザーに対して共通ロールとして付与されます。</div>
+</div>
+<p>一方、DV_OWNER ロールは、Database Vault の構成時にローカルユーザーに付与することも、CDB全体で有効な共通ユーザーに共通ロールとして付与することもできます。
+| ただし、DV_OWNER を共通ユーザーにローカルロールとして付与した場合、そのユーザーは他の PDB では DV_OWNER ロールを使用できなくなるため注意が必要です。</p>
+<p>今回の構成では、CDBルート・PDB いずれにおいても、共通ユーザー（上記２つのユーザー）を DV 管理者として使用します。
+このため、PDBでの有効化時にも共通ユーザーを再利用します。</p>
+<p>共通ユーザーを作成する前に、共通ユーザーの接頭辞（通常は <code class="docutils literal notranslate"><span class="pre">C##</span></code> ）が正しいかどうか確認しておきます。</p>
 <div class="literal-block-wrapper docutils container" id="id5">
 <div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">markup</span><span class="w"> </span><span class="n">csv</span><span class="w"> </span><span class="k">on</span>
@@ -435,6 +458,9 @@ DV_OWNERを共通ユーザーにローカルに付与すると、共通DV_OWNER�
 </pre></div>
 </div>
 </div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </section>
 <section id="id2">
 <h2>(CDB$ROOT) Database Vaultの構成<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
@@ -451,8 +477,8 @@ DV_OWNERを共通ユーザーにローカルに付与すると、共通DV_OWNER�
 </pre></div>
 </div>
 </div>
-<p>force_local_dvownerをFALSEに設定すると、共通ユーザーは、このCDBルートに関連付けられているPDBのDV_OWNER権限を持つことができます。
-TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OWNERロール権限を持つように制限されます。</p>
+<p><code class="docutils literal notranslate"><span class="pre">force_local_dvowner</span></code> をFALSEに設定すると、共通ユーザーはこのCDBルートに関連付けられているPDBの DV_OWNER 権限を持つことができます。
+TRUEに設定すると、共通 DV_OWNER ユーザーはCDBルートにのみ DV_OWNER ロール権限を持つように制限されます。</p>
 <p>CDBの構成ステータスが TRUE になっていることを確認します。</p>
 <div class="literal-block-wrapper docutils container" id="id8">
 <div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
@@ -477,26 +503,29 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </div>
 </div>
 <p>問題なく、実行が完了することを確認します。</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
 </section>
 <section id="id3">
 <h2>(CDB$ROOT) Database Vaultを有効化する<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>DB Vaultをマルチテナント環境(CDB)で有効化する際には、大きく分けて「通常(非厳密)モード」と「厳密モード」の2つの動作モードを選択できます。
-これらのモードは、CDB全体でDB Vaultが有効化されている際に、PDB(Pluggable Database)ごとのDB Vault有効化状態がどのように扱われるかを制御します。</p>
+<p>Database Vaultをマルチテナント環境(CDB)で有効化する際には、大きく分けて「通常(非厳密)モード」と「厳密モード」の2つの動作モードを選択できます。
+これらのモードは、CDB全体でDatabase Vaultが有効化されている際に、PDBごとの Database Vaultの有効化状態がどのように扱われるかを制御します。</p>
 <ul class="simple">
 <li><dl class="simple">
-<dt>通常モード</dt><dd><p>CDBでDB Vaultが有効化されている場合でも、PDB単位でDB Vaultが有効化されているかどうかにかかわらず、そのPDBは通常通り機能を継続します。
-つまり、CDBではDB Vaultが有効であっても、PDBレベルで無効な状態のままでもPDBは使い続けることができます。</p>
+<dt>通常モード</dt><dd><p>CDBでDatabase Vaultが有効化されている場合でも、PDB単位で Database Vault が有効化されているかどうかにかかわらず、そのPDBは通常通り機能を継続します。
+つまり、CDBでは Database Vault が有効であっても、PDBレベルで無効な状態のままでもPDBは使い続けることができます。</p>
 </dd>
 </dl>
 </li>
 <li><dl class="simple">
-<dt>厳密モード</dt><dd><p>厳密モードでは、CDBがDB Vault有効状態になった時点で、PDBを読み書きモードでオープンするにはそのPDBでもDB Vaultが構成・有効化されている必要があります。
-簡単に言えば、「CDBでDB Vaultが有効なら、すべてのPDBもDB Vaultを有効化していないと開けない」という制限が課されます。</p>
+<dt>厳密モード</dt><dd><p>厳密モードでは、CDBがDatabase Vault有効状態になった時点で、PDBを読み書きモードでオープンするにはそのPDBでもDatabase Vaultが構成・有効化されている必要があります。
+簡単に言えば、「CDBでDatabase Vaultが有効なら、すべてのPDBもDatabase Vaultを有効化していないと開けない」という制限が課されます。</p>
 </dd>
 </dl>
 </li>
 </ul>
-<p>今回はPDBだけDVを有効化していきますので、「通常モード」で有効化していきます。</p>
+<p>今回はPDBだけで Database Vault を使用していきますので、「通常モード」で有効化していきます。</p>
 <p>先ほど作成し、DV管理者として指定した <code class="docutils literal notranslate"><span class="pre">C##DVOWNER</span></code> ユーザーでCDBに接続します。</p>
 <div class="literal-block-wrapper docutils container" id="id10">
 <div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
@@ -529,7 +558,7 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </pre></div>
 </div>
 </div>
-<p>SYSユーザーで再び接続し、DB Vaultの設定を完全に反映させるためCDBを再起動します。</p>
+<p>SYSユーザーで再び接続し、Database Vaultの設定を完全に反映させるためCDBを再起動します。</p>
 <div class="literal-block-wrapper docutils container" id="id13">
 <div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id13" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">shutdown</span><span class="w"> </span><span class="k">immediate</span>
@@ -543,7 +572,7 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 <span class="w">        </span><span class="mi">2</span><span class="w"> </span><span class="n">PDB$SEED</span><span class="w">                       </span><span class="k">READ</span><span class="w"> </span><span class="k">ONLY</span><span class="w">  </span><span class="k">NO</span>
 <span class="w">        </span><span class="mi">3</span><span class="w"> </span><span class="n">FREEPDB1</span><span class="w">                       </span><span class="k">READ</span><span class="w"> </span><span class="k">WRITE</span><span class="w"> </span><span class="k">NO</span>
 
-<span class="c1">-- 再起動後、DVとOLSが有効化されていることを確認</span>
+<span class="c1">-- 再起動後、Database VaultとOLSが有効化されていることを確認</span>
 
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">set</span><span class="w"> </span><span class="n">markup</span><span class="w"> </span><span class="n">csv</span><span class="w"> </span><span class="k">on</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="k">parameter</span><span class="p">,</span><span class="w"> </span><span class="n">VALUE</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">V$OPTION</span><span class="w"> </span><span class="k">WHERE</span><span class="w"> </span><span class="k">PARAMETER</span><span class="w"> </span><span class="k">IN</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;Oracle Database Vault&#39;</span><span class="p">,</span><span class="s1">&#39;Oracle Label Security&#39;</span><span class="p">);</span>
@@ -552,6 +581,9 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 <span class="ss">&quot;Oracle Database Vault&quot;</span><span class="p">,</span><span class="ss">&quot;TRUE&quot;</span>
 </pre></div>
 </div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
 </div>
 </section>
 <section id="pdb-database-vault">
@@ -574,7 +606,7 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </pre></div>
 </div>
 </div>
-<p>FREEPDB1にSYSユーザーで接続し、DB Vaultを構成します。</p>
+<p>FREEPDB1 にSYSユーザーで接続し、Database Vaultを構成します。</p>
 <div class="literal-block-wrapper docutils container" id="id15">
 <div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id15" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
@@ -583,8 +615,12 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 <span class="w">        </span><span class="n">dvacctmgr_uname</span><span class="w">      </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;C##DVACCTMGR&#39;</span><span class="p">);</span>
 <span class="k">END</span><span class="p">;</span>
 <span class="o">/</span>
-
-<span class="c1">-- 構成ステータスがTRUEになっていることを確認</span>
+</pre></div>
+</div>
+</div>
+<div class="literal-block-wrapper docutils container" id="id16">
+<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id16" title="Link to this code">#</a></div>
+<div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 構成ステータスがTRUEになっていることを確認</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">DBA_DV_STATUS</span><span class="p">;</span>
 <span class="ss">&quot;NAME&quot;</span><span class="w">               </span><span class="p">,</span><span class="ss">&quot;STATUS&quot;</span>
 <span class="ss">&quot;DV_CONFIGURE_STATUS&quot;</span><span class="p">,</span><span class="ss">&quot;TRUE&quot;</span>
@@ -593,17 +629,17 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </pre></div>
 </div>
 </div>
-<p>utlrp.sqlスクリプトを実行し、無効化状態となっているオブジェクトをコンパイルします。</p>
-<div class="literal-block-wrapper docutils container" id="id16">
-<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id16" title="Link to this code">#</a></div>
+<p><code class="docutils literal notranslate"><span class="pre">utlrp.sql</span></code> スクリプトを実行し、無効化状態となっているオブジェクトをコンパイルします。</p>
+<div class="literal-block-wrapper docutils container" id="id17">
+<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id17" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="o">@?/</span><span class="n">rdbms</span><span class="o">/</span><span class="k">admin</span><span class="o">/</span><span class="n">utlrp</span><span class="p">.</span><span class="k">sql</span>
 </pre></div>
 </div>
 </div>
 <p>問題なく、実行が完了することを確認します。</p>
-<p>先ほど構成したDB Vault所有者ユーザーとして、PDBに接続します。</p>
-<div class="literal-block-wrapper docutils container" id="id17">
-<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id17" title="Link to this code">#</a></div>
+<p>先ほど構成した Vault所有者ユーザーとして、PDBに接続します。</p>
+<div class="literal-block-wrapper docutils container" id="id18">
+<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id18" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="err">$</span><span class="w"> </span><span class="n">sqlplus</span><span class="w"> </span><span class="k">c</span><span class="o">##</span><span class="n">dvowner</span><span class="o">/&lt;</span><span class="n">password</span><span class="o">&gt;@</span><span class="n">localhost</span><span class="p">:</span><span class="mi">1521</span><span class="o">/</span><span class="n">FREEPDB1</span>
 
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">con_name</span>
@@ -613,15 +649,15 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 <span class="c1">------------------------------</span>
 <span class="n">FREEPDB1</span>
 
-<span class="c1">-- DB Vaultを有効化</span>
+<span class="c1">-- Database Vaultを有効化</span>
 
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">EXEC</span><span class="w"> </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">ENABLE_DV</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <p>CDBにSYSユーザーで接続し、PDBを再起動します。</p>
-<div class="literal-block-wrapper docutils container" id="id18">
-<div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id18" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id19">
+<div class="code-block-caption"><span class="caption-text">CDB</span><a class="headerlink" href="#id19" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="n">conn</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">sysdba</span>
 <span class="n">Connected</span><span class="p">.</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">con_name</span>
@@ -637,9 +673,9 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </pre></div>
 </div>
 </div>
-<p>DB VaultおよびOLSが有効化されたことを確認します</p>
-<div class="literal-block-wrapper docutils container" id="id19">
-<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id19" title="Link to this code">#</a></div>
+<p>Database VaultおよびOLSが有効化されたことを確認します</p>
+<div class="literal-block-wrapper docutils container" id="id20">
+<div class="code-block-caption"><span class="caption-text">PDB</span><a class="headerlink" href="#id20" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">SELECT</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="k">FROM</span><span class="w"> </span><span class="n">DBA_DV_STATUS</span><span class="p">;</span>
 
 <span class="n">NAME</span><span class="w">                </span><span class="n">STATUS</span>
@@ -658,6 +694,8 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
 </pre></div>
 </div>
 </div>
+<p>Database Vault の事前設定はこちらで完了です。
+次の手順では、レルムの作成やオブジェクトに対する認可を行っていきます。</p>
 </section>
 </section>
 
@@ -672,6 +710,24 @@ TRUEに設定すると、共通DV_OWNERユーザーはCDBルートにのみDV_OW
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="0_introduction.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">0. イントロダクション</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="2_authRealm.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">2. Database Vaultの準備 (レルムの作成と認可)</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

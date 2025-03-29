@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>4. 二人制整合性を使用してみる &#8212; Oracle DB Sec Tutorial</title>
+    <title>4. 二人制整合性を設定・体験する &#8212; Oracle DB Sec Tutorial</title>
   
   
   
@@ -55,6 +55,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'dv/4_twoPersonIntegrity';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="5. Database Vaultを無効化する" href="5_cleanup.html" />
+    <link rel="prev" title="3. Database Vaultの動作を確認する" href="3_checkDv.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -117,8 +119,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの事前準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">4. 二人制整合性を設定・体験する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -342,7 +353,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>4. 二人制整合性を使用してみる</h1>
+    <h1>4. 二人制整合性を設定・体験する</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -371,12 +382,13 @@ document.write(`
                 <article class="bd-article">
                   
   <section id="id1">
-<h1>4. 二人制整合性を使用してみる<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
+<h1>4. 二人制整合性を設定・体験する<a class="headerlink" href="#id1" title="Link to this heading">#</a></h1>
 <p>本手順では、Oracle Database Vaultの二人制整合性を使用する方法を説明します。
 二人制整合性は、危険を伴う可能性のあるアクションに対して、追加のセキュリティ層を提供するための仕組みです。
 例えば、データベースのパッチ適用などの重要な作業を1人のユーザーだけで実施できないようにすることで、
 リスクを軽減できます。</p>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>ユーザーの作成</p></li>
 <li><p>検証ファンクションの作成</p></li>
@@ -384,6 +396,7 @@ document.write(`
 <li><p>コマンドルールの作成</p></li>
 <li><p>作成したオブジェクトの削除</p></li>
 </ul>
+</aside>
 <section id="id2">
 <h2>ユーザーの作成<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>まず、以下2人のDBユーザーを作成します。接頭辞はTPI（Two-Person Integrity）としています。</p>
@@ -645,6 +658,24 @@ DVを有効化する際に指定した、ユーザー管理用アカウント（
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="3_checkDv.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">3. Database Vaultの動作を確認する</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="5_cleanup.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">5. Database Vaultを無効化する</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

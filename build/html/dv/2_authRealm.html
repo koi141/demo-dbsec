@@ -55,6 +55,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'dv/2_authRealm';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="3. Database Vaultの動作を確認する" href="3_checkDv.html" />
+    <link rel="prev" title="1. Database Vaultの有効化" href="1_setup.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -117,8 +119,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの事前準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_twoPersonIntegrity.html">4. 二人制整合性を設定・体験する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="5_cleanup.html">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -374,17 +385,35 @@ document.write(`
                   
   <section id="database-vault">
 <h1>2. Database Vaultの準備 (レルムの作成と認可)<a class="headerlink" href="#database-vault" title="Link to this heading">#</a></h1>
-<p>DB Vaultのレルムを作成し、指定したオブジェクトをレルムに追加します。
-また、ユーザーにアクセス権を付与し、条件付きでアクセスを制御する、レルム認可を設定します。</p>
-<p><strong>実施内容</strong></p>
+<p>Database Vault のレルムを作成し、指定したオブジェクトをレルムに追加します。
+また、ユーザーにアクセス権を付与し、条件付きでアクセスを制御するレルム認可を設定します。</p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>SYSユーザーでの制約確認</p></li>
 <li><p>レルムの作成とオブジェクト登録</p></li>
 <li><p>レルム認可の設定</p></li>
 </ul>
+</aside>
+<p>設定のイメージは以下図のようになります。</p>
+<figure class="align-default" id="id4">
+<img alt="../_images/dvdemocase02.png" src="../_images/dvdemocase02.png" />
+<figcaption>
+<p><span class="caption-text">「3. Database Vaultの動作を確認する」にて確認する動作のイメージ</span><a class="headerlink" href="#id4" title="Link to this image">#</a></p>
+</figcaption>
+</figure>
+<p>HRユーザー、SALES_APPユーザー、APPユーザーの作成および権限設定については以下の別ベージにありますので、まだ作成されていない場合はご参照ください。</p>
+<ul class="simple">
+<li><p><a class="reference external" href="../env_setup/2_sampleSchema.html">HRユーザーの設定 (サンプルスキーマ)</a></p></li>
+<li><p><a class="reference external" href="../redact/1_setup.html#sales-app">SALES_APPユーザーの作成</a></p></li>
+<li><p><a class="reference external" href="../vpd/3_clientIdentifier.html#app">APPユーザーの作成</a></p></li>
+</ul>
 <section id="sys">
 <h2>SYSユーザーでの制約確認<a class="headerlink" href="#sys" title="Link to this heading">#</a></h2>
-<p>Database Vaultを有効化した時点でSYSユーザーによる管理操作が制限され、ユーザーが作成できないことが分かります。</p>
+<div class="line-block">
+<div class="line">レルム設定の前にこの時点での特権ユーザーの制限を確認しておきます。</div>
+<div class="line">Database Vaultを有効化した時点でSYSユーザーによる管理操作が制限され、ユーザーが作成できないことが分かります。</div>
+</div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">show</span><span class="w"> </span><span class="k">user</span>
 <span class="k">USER</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="ss">&quot;SYS&quot;</span>
 <span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">create</span><span class="w"> </span><span class="k">user</span><span class="w"> </span><span class="n">test</span><span class="p">;</span>
@@ -395,7 +424,7 @@ document.write(`
 <span class="n">Help</span><span class="p">:</span><span class="w"> </span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">docs</span><span class="p">.</span><span class="n">oracle</span><span class="p">.</span><span class="n">com</span><span class="o">/</span><span class="n">error</span><span class="o">-</span><span class="n">help</span><span class="o">/</span><span class="n">db</span><span class="o">/</span><span class="n">ora</span><span class="o">-</span><span class="mi">01031</span><span class="o">/</span>
 </pre></div>
 </div>
-<p>この時点ではレルムはまだ作成していないため、表は参照できます。</p>
+<p>ただ、この時点ではレルムはまだ作成していないため、表は参照することができます。</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="k">count</span><span class="p">(</span><span class="o">*</span><span class="p">)</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">hr</span><span class="p">.</span><span class="n">jobs</span><span class="p">;</span>
 
 <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span>
@@ -407,8 +436,8 @@ document.write(`
 <section id="id1">
 <h2>レルムの作成<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>以下のSQLで、デモ用のレルムを作成します。(*)はデフォルトで設定されるもののため、明示的に設定する必要はありません。</p>
-<div class="literal-block-wrapper docutils container" id="id4">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id4" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id5">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
 <span class="w">    </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">CREATE_REALM</span><span class="p">(</span>
 <span class="w">        </span><span class="n">realm_name</span><span class="w">        </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;Realm for demo&#39;</span><span class="p">,</span><span class="w">              </span><span class="c1">-- レルム名</span>
@@ -425,8 +454,8 @@ document.write(`
 </div>
 </div>
 <p>作成したレルムは <code class="docutils literal notranslate"><span class="pre">DVSYS.DBA_DV_REALM</span></code> から確認することができます。</p>
-<div class="literal-block-wrapper docutils container" id="id5">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id5" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id6">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">name</span><span class="p">,</span><span class="w"> </span><span class="n">description</span><span class="p">,</span><span class="w"> </span><span class="n">realm_type</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">dvsys</span><span class="p">.</span><span class="n">dba_dv_realm</span><span class="p">;</span>
 <span class="ss">&quot;NAME&quot;</span><span class="w">                                             </span><span class="p">,</span><span class="ss">&quot;DESCRIPTION&quot;</span><span class="w">                                                                                                                                       </span><span class="p">,</span><span class="ss">&quot;REALM_TYPE&quot;</span>
 <span class="ss">&quot;Oracle Database Vault&quot;</span><span class="w">                            </span><span class="p">,</span><span class="ss">&quot;Defines the realm for the Oracle Database Vault schemas - DVSYS and DVF where Database Vault access control configuration and roles are contained.&quot;</span><span class="p">,</span><span class="ss">&quot;MANDATORY&quot;</span>
@@ -448,8 +477,8 @@ document.write(`
 <section id="id2">
 <h2>オブジェクトのレルムへの登録<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>レルム認可を必要とするオブジェクトを登録します。</p>
-<div class="literal-block-wrapper docutils container" id="id6">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id7">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- HR.COUNTRIES表を登録</span>
 <span class="k">BEGIN</span>
 <span class="w">    </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">ADD_OBJECT_TO_REALM</span><span class="p">(</span>
@@ -476,8 +505,8 @@ document.write(`
 </div>
 <p>object_name, object_typeではワイルドカード'%'が使用することができますので、HRスキーマ内のオブジェクトを一括で登録することも可能です。</p>
 <p>登録したオブジェクトは以下のコマンドで確認できます。</p>
-<div class="literal-block-wrapper docutils container" id="id7">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id7" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id8">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">REALM_NAME</span><span class="p">,</span><span class="w"> </span><span class="k">OWNER</span><span class="p">,</span><span class="w"> </span><span class="n">OBJECT_NAME</span><span class="p">,</span><span class="w"> </span><span class="n">OBJECT_TYPE</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">DVSYS</span><span class="p">.</span><span class="n">DBA_DV_REALM_OBJECT</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">realm_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Realm for demo&#39;</span><span class="p">;</span>
 <span class="ss">&quot;REALM_NAME&quot;</span><span class="w">    </span><span class="p">,</span><span class="ss">&quot;OWNER&quot;</span><span class="p">,</span><span class="ss">&quot;OBJECT_NAME&quot;</span><span class="p">,</span><span class="ss">&quot;OBJECT_TYPE&quot;</span>
 <span class="ss">&quot;Realm for demo&quot;</span><span class="p">,</span><span class="ss">&quot;HR&quot;</span><span class="w">   </span><span class="p">,</span><span class="ss">&quot;COUNTRIES&quot;</span><span class="w">  </span><span class="p">,</span><span class="ss">&quot;TABLE&quot;</span>
@@ -492,8 +521,8 @@ document.write(`
 そのためレルム認可を設定し、レルム内のオブジェクトにアクセスする権限を付与します。</p>
 <section id="hr">
 <h3>所有者(HR)<a class="headerlink" href="#hr" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id8">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id8" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id9">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
 <span class="w">    </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">ADD_AUTH_TO_REALM</span><span class="p">(</span>
 <span class="w">        </span><span class="n">realm_name</span><span class="w">     </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;Realm for demo&#39;</span><span class="p">,</span><span class="w">   </span><span class="c1">-- レルム名</span>
@@ -508,8 +537,8 @@ document.write(`
 </section>
 <section id="sales-app">
 <h3>参加者(SALES_APPユーザー)<a class="headerlink" href="#sales-app" title="Link to this heading">#</a></h3>
-<div class="literal-block-wrapper docutils container" id="id9">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id9" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id10">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">BEGIN</span>
 <span class="w">    </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">ADD_AUTH_TO_REALM</span><span class="p">(</span>
 <span class="w">        </span><span class="n">realm_name</span><span class="w">        </span><span class="o">=&gt;</span><span class="w"> </span><span class="s1">&#39;Realm for demo&#39;</span><span class="p">,</span><span class="w">   </span><span class="c1">-- レルム名</span>
@@ -525,8 +554,8 @@ document.write(`
 <section id="app">
 <h3>参加者(APPユーザー)<a class="headerlink" href="#app" title="Link to this heading">#</a></h3>
 <p>APPユーザーに対してはIPアドレスでの制限を追加します。</p>
-<div class="literal-block-wrapper docutils container" id="id10">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id10" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id11">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id11" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- ルールを作成</span>
 <span class="k">BEGIN</span>
 <span class="w">    </span><span class="n">DBMS_MACADM</span><span class="p">.</span><span class="n">CREATE_RULE</span><span class="p">(</span>
@@ -581,8 +610,8 @@ document.write(`
 </div>
 </div>
 <p>設定したレルム認可を確認します。</p>
-<div class="literal-block-wrapper docutils container" id="id11">
-<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id11" title="Link to this code">#</a></div>
+<div class="literal-block-wrapper docutils container" id="id12">
+<div class="code-block-caption"><span class="caption-text">C##DVOWNERユーザー</span><a class="headerlink" href="#id12" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="n">realm_name</span><span class="p">,</span><span class="w"> </span><span class="n">grantee</span><span class="p">,</span><span class="w"> </span><span class="n">AUTH_OPTIONS</span><span class="p">,</span><span class="n">AUTH_RULE_SET_NAME</span><span class="w"> </span><span class="k">from</span><span class="w"> </span><span class="n">DVSYS</span><span class="p">.</span><span class="n">DBA_DV_REALM_AUTH</span><span class="w"> </span><span class="k">where</span><span class="w"> </span><span class="n">realm_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;Realm for demo&#39;</span><span class="p">;</span>
 <span class="ss">&quot;REALM_NAME&quot;</span><span class="w">    </span><span class="p">,</span><span class="ss">&quot;GRANTEE&quot;</span><span class="w">  </span><span class="p">,</span><span class="ss">&quot;AUTH_OPTIONS&quot;</span><span class="p">,</span><span class="ss">&quot;AUTH_RULE_SET_NAME&quot;</span>
 <span class="ss">&quot;Realm for demo&quot;</span><span class="p">,</span><span class="ss">&quot;APP&quot;</span><span class="w">      </span><span class="p">,</span><span class="ss">&quot;Participant&quot;</span><span class="w"> </span><span class="p">,</span><span class="ss">&quot;Ruleset for APP&quot;</span>
@@ -591,6 +620,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
+<p>Database Vaultの認可設定が終わりました。次の手順にて実際に確認してみましょう。</p>
 </section>
 </section>
 </section>
@@ -606,6 +636,24 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="1_setup.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">1. Database Vaultの有効化</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="3_checkDv.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">3. Database Vaultの動作を確認する</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

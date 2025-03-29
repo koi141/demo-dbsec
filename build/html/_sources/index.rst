@@ -7,7 +7,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
 .. hint::
 
    | このサイトで紹介する手順では、実行結果の一部を見やすくするために整形や省略を行っています。
-   | そのため、実際の結果とは若干異なる場合がありますので、ご了承ください。
+   | そのため実際の結果とは若干異なる場合がありますが、ご了承ください。
 
 |
 .. toctree::
@@ -76,6 +76,7 @@ Oracle Databaseのセキュリティ機能を試してみたい方向けにチ�
    :maxdepth: 1
    :caption: Database Vault:
    
+   /dv/0_introduction
    /dv/1_setup
    /dv/2_authRealm
    /dv/3_checkDv

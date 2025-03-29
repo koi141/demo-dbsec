@@ -55,6 +55,8 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'dv/5_cleanup';</script>
     <link rel="index" title="索引" href="../genindex.html" />
     <link rel="search" title="検索" href="../search.html" />
+    <link rel="next" title="（おまけ）各コンポーネントの確認クエリ" href="99_checkComponent.html" />
+    <link rel="prev" title="4. 二人制整合性を使用してみる" href="4_twoPersonIntegrity.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="ja"/>
   </head>
@@ -117,8 +119,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -167,8 +167,9 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">TDE（透過的データ暗号化）:</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの準備</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. TDE 表領域を暗号化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/1_setup.html">1. TDEの事前準備</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tde/2_encryption.html">2. 表領域の暗号化を行う</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tde/3_autoWalletOpen.html">3. キーストアを自動でオープンするようにする</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">ネイティブ・ネットワーク暗号化:</span></p>
@@ -196,6 +197,16 @@
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/3_allowTraffic.html">3. SQLの許可リストを作成する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/4_checkFirewall.html">4. SQL Firewallの動作を確認する</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../sqlfirewall/5_setup-datasafe.html">5. Data Safeの準備</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
+<ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="0_introduction.html">0. イントロダクション</a></li>
+<li class="toctree-l1"><a class="reference internal" href="1_setup.html">1. Database Vaultの有効化</a></li>
+<li class="toctree-l1"><a class="reference internal" href="2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
+<li class="toctree-l1"><a class="reference internal" href="3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="4_twoPersonIntegrity.html">4. 二人制整合性を使用してみる</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">5. Database Vaultを無効化する</a></li>
+<li class="toctree-l1"><a class="reference internal" href="99_checkComponent.html">（おまけ）各コンポーネントの確認クエリ</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Oracle Label Security:</span></p>
 <ul class="nav bd-sidenav">
@@ -372,7 +383,8 @@ document.write(`
   <section id="database-vault">
 <h1>5. Database Vaultを無効化する<a class="headerlink" href="#database-vault" title="Link to this heading">#</a></h1>
 <p>Database Vaultで設定したレルムおよび関連する認可、オブジェクト登録を削除し、Database Vault自体を無効化します。</p>
-<p><strong>実施内容</strong></p>
+<aside class="topic">
+<p class="topic-title">実施内容</p>
 <ul class="simple">
 <li><p>レルムの無効化</p></li>
 <li><p>レルム認可の削除</p></li>
@@ -380,6 +392,7 @@ document.write(`
 <li><p>レルムの削除</p></li>
 <li><p>Database Vault の無効化</p></li>
 </ul>
+</aside>
 <section id="id1">
 <h2>レルムの無効化<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <p>作成したレルム (Realm for demo) を無効化します。</p>
@@ -558,6 +571,24 @@ document.write(`
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="4_twoPersonIntegrity.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">前へ</p>
+        <p class="prev-next-title">4. 二人制整合性を使用してみる</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="99_checkComponent.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">次へ</p>
+        <p class="prev-next-title">（おまけ）各コンポーネントの確認クエリ</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               

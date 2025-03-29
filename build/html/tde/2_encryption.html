@@ -200,6 +200,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Database Vault:</span></p>
 <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../dv/0_introduction.html">0. イントロダクション</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dv/1_setup.html">1. Database Vaultの有効化</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dv/2_authRealm.html">2. Database Vaultの準備 (レルムの作成と認可)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../dv/3_checkDv.html">3. Database Vaultの動作を確認する</a></li>
@@ -405,7 +406,7 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<p>OSコマンドでUSERS表領域のデータファイルの中身を確認します。</p>
+<p>OSコマンドでUSERS表領域のデータファイルの中身を確認します。SQL*Plusでは <code class="docutils literal notranslate"><span class="pre">!</span></code> を先頭に使用するとOSコマンドを実行できます。</p>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="k">SQL</span><span class="o">&gt;</span><span class="w"> </span><span class="o">!</span><span class="n">strings</span><span class="w"> </span><span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">oracle</span><span class="o">/</span><span class="n">oradata</span><span class="o">/</span><span class="k">FREE</span><span class="o">/</span><span class="n">FREEPDB1</span><span class="o">/</span><span class="n">users01</span><span class="p">.</span><span class="n">dbf</span>
 <span class="p">...</span>
 <span class="n">CJOHNSON</span>
@@ -423,11 +424,11 @@ document.write(`
 <span class="p">...</span>
 </pre></div>
 </div>
-<p>このように、TDEで暗号化されていない場合、stringsコマンドでデータの内容が確認できてしまうことが分かります。</p>
+<p>このようにTDEで暗号化されていない場合、 <code class="docutils literal notranslate"><span class="pre">strings</span></code> コマンドでデータの内容が確認できてしまうことが分かります。</p>
 </section>
 <section id="id3">
 <h2>表領域の暗号化を行う<a class="headerlink" href="#id3" title="Link to this heading">#</a></h2>
-<p>次に、HRスキーマが格納されるUSERS表領域を暗号化します。</p>
+<p>では、HRスキーマが格納されるUSERS表領域をオープンにしたまま暗号化してみます。</p>
 <div class="literal-block-wrapper docutils container" id="id6">
 <div class="code-block-caption"><span class="caption-text">FREEPDB1で実行 (SYSユーザー)</span><a class="headerlink" href="#id6" title="Link to this code">#</a></div>
 <div class="highlight-sql notranslate"><div class="highlight"><pre><span></span><span class="c1">-- 実行時間を計測</span>
@@ -519,7 +520,7 @@ total<span class="w"> </span><span class="m">1077780</span>
 </div>
 <div class="line-block">
 <div class="line">以上の結果より <code class="docutils literal notranslate"><span class="pre">users01.dbf_new</span></code> という同じサイズの新しいデータファイルが作成されていることが分かります。</div>
-<div class="line">このようにオンライン処理では、元のデータファイルと同じサイズの新しいファイルが作成されます。そのため、オンライン暗号化を行う際には、対象データファイルと同じサイズの空き容量を確保しておく必要があります。</div>
+<div class="line">このようにオンライン処理では元のデータファイルと同じサイズの新しいファイルが作成されます。そのため、オンライン暗号化を行う際には、対象データファイルと同じサイズの空き容量を確保しておく必要があります。</div>
 </div>
 </section>
 </section>
