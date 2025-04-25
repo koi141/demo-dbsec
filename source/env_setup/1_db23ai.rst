@@ -52,7 +52,7 @@ FREEでは以下の3種類で提供しています。
 
 + コンテナ（docker, podman）
 + VMイメージ（VM VirtualBox）
-+ rpmパッケージ（ol8,9, Windows）
++ rpmパッケージ（Oracle Linux 8,9, Windows）
 
 各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載がありますので、お好みの方法で環境を構築してください。
 
