@@ -184,4 +184,4 @@ SYSユーザーでDBユーザーが作成できるようになり、DB Vaultが�
     User dropped.
 
 
-以上でDB Vaultのデモは終了です。
+以上でDatabase Vaultのデモは終了です。

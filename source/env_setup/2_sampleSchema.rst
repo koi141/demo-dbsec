@@ -15,7 +15,7 @@
 
 サンプルスキーマは、GitHubで公開されている `こちらのリンク <https://github.com/oracle-samples/db-sample-schemas/archive/refs/tags/v23.3.zip>`__ よりファイルをダウンロードします。
 
-   GitHubレポジトリ：https://github.com/oracle-samples/db-sample-schemas
+> GitHubレポジトリ：https://github.com/oracle-samples/db-sample-schemas
 
 まず、次のコマンドでスキーマファイルをダウンロードします。
 

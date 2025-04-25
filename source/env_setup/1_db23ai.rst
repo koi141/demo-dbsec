@@ -41,7 +41,7 @@ DB23ai を使用できる環境について
     + Oracle Database Appliance
     + Exadata Database Appliance
 
-ダウンロードサイト： https://www.oracle.com/jp/database/free/get-started/
+> ダウンロードサイト： https://www.oracle.com/jp/database/free/get-started/
 
 
 ******************************
