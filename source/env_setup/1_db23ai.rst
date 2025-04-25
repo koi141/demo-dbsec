@@ -4,30 +4,49 @@
 
 .. topic:: 実施内容
 
+    + DB23ai にてご利用いただける機能について
     + DB23ai FREEをインストールし、データベースを作成する
 
+*******************************************
+DB23ai にてご利用いただける機能について
+*******************************************
+Oracleが提供する新しい無償版バージョン「23ai FREE」では従来のXE（Express Edition）と比較して、セキュリティ機能が多く解放されており、気軽に試しやすくなりました。 
+TDE や Database Vault など、従来の無償版XEでは使用できなかった機能が使えるようになっていますので、ぜひ、お試しください。
 
-******************************
-DB23aiについて
-******************************
+使用可能な機能の一部は以下の通りです。
++ TDE
++ Data Redaction
++ Oracle Label Security
++ Virtual Private Vault
++ Database Vault
++ SQL Firewall
++ ファイングレイン監査
 
-23aiは以下の環境にてご使用いただけます。（2025年1月時点）
+その他FREEで使用できる機能は `こちら <https://apex.oracle.com/database-features/>`__ からもご確認いただけます。
+
+
+***********************************
+DB23ai を使用できる環境について
+***********************************
+
+このサイトで紹介する手順の環境は主に無償版である23ai FREEを使用します。
+23ai は以下の環境にてご使用いただけます。（2025年1月時点）
 
 **Oracle Cloud環境**
     + Base Database Service
     + Exadata Database Service
     + Autonomous Database
+
 **オンプレミス環境**
     + FREE(無償版) 
     + Oracle Database Appliance
     + Exadata Database Appliance
 
-| このサイトで紹介する手順の環境は主に無償版である23ai FREEを使用します。
-| ダウンロードは `こちら <https://www.oracle.com/jp/database/free/get-started/>`__ から行えます。  
+ダウンロードはこちら： https://www.oracle.com/jp/database/free/get-started/
 
 
 ******************************
-DB23ai FREEを準備する
+DB23ai FREE の準備
 ******************************
 
 FREEでは以下の3種類で提供しています。
@@ -36,10 +55,9 @@ FREEでは以下の3種類で提供しています。
 + VMイメージ（VM VirtualBox）
 + rpmパッケージ（ol8,9, Windows）
 
-各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載されていますので、お好みの方法でDB環境を構築してください。
+各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載されていますので、お好みの方法で環境を構築してください。
 
-rpmでインストールする場合、 `OCIチュートリアル <https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install>`__ でもインストール手順が紹介されています。  
-ぜひ参考にしてみてください。OCIチュートリアルを参照する場合、表領域の作成手順は不要ですので、その前の手順までを実施してください。
+rpmでインストールする場合、 `OCIチュートリアル <https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install>`__ でもインストール手順が紹介されていますので、ぜひ参考にしてみてください。OCIチュートリアルでの手順では表領域の作成手順は不要ですので、その前の手順までを実施してください。
 
 
 .. admonition:: FREEのライセンス制限
