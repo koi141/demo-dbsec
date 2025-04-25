@@ -13,8 +13,9 @@
 
 本デモでは、HRスキーマを作成します。
 
-サンプルスキーマは、GitHubで公開されている `こちら <https://github.com/oracle-samples/db-sample-schemas/archive/refs/tags/v23.3.zip>`__ からダウンロードしたファイルを使用します。
+サンプルスキーマは、GitHubで公開されている `こちらのリンク <https://github.com/oracle-samples/db-sample-schemas/archive/refs/tags/v23.3.zip>`__ よりファイルをダウンロードします。
 
+   GitHubレポジトリ：https://github.com/oracle-samples/db-sample-schemas
 
 まず、次のコマンドでスキーマファイルをダウンロードします。
 
@@ -106,7 +107,6 @@ HRスキーマを作成するために、まずDBに接続します。
     7 rows selected.
 
 
-また、参考までですがHRスキーマの構成は以下のようになっています。
+また、参考までに HRスキーマの構成は以下のようになっています。
 
-.. image:: ./HR_OEスキーマ.gif
-
+.. image:: ./_img/hr_oe_schema.gif

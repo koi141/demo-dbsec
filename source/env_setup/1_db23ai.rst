@@ -4,8 +4,7 @@
 
 .. topic:: 実施内容
 
-    + DB23ai にてご利用いただける機能について
-    + DB23ai FREEをインストールし、データベースを作成する
+    + DB23ai FREEをインストールし、DBを作成する
 
 *******************************************
 DB23ai にてご利用いただける機能について
@@ -42,7 +41,7 @@ DB23ai を使用できる環境について
     + Oracle Database Appliance
     + Exadata Database Appliance
 
-ダウンロードはこちら： https://www.oracle.com/jp/database/free/get-started/
+ダウンロードサイト： https://www.oracle.com/jp/database/free/get-started/
 
 
 ******************************
@@ -55,7 +54,7 @@ FREEでは以下の3種類で提供しています。
 + VMイメージ（VM VirtualBox）
 + rpmパッケージ（ol8,9, Windows）
 
-各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載されていますので、お好みの方法で環境を構築してください。
+各インストール手順については、 `こちらのドキュメント <https://docs.oracle.com/cd/G11854_01/xeinl/index.html>`__ に記載がありますので、お好みの方法で環境を構築してください。
 
 rpmでインストールする場合、 `OCIチュートリアル <https://oracle-japan.github.io/ocitutorials/ai-vector-search/ai-vector102-23aifree-install>`__ でもインストール手順が紹介されていますので、ぜひ参考にしてみてください。OCIチュートリアルでの手順では表領域の作成手順は不要ですので、その前の手順までを実施してください。
 
