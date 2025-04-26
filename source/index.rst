@@ -2,14 +2,25 @@
 Oracle DB Sec Tutorial
 ############################################
 
-Oracle Databaseのセキュリティ機能を試してみたい方向けにチュートリアル手順を紹介するサイトです。
+.. raw:: html
 
-.. hint::
+   <p align="left">
+      <a href="https://github.com/koi141/demo-dbsec">
+         <img src="https://img.shields.io/github/last-commit/koi141/demo-dbsec" alt="Last Commit">
+      </a>
+      <a href="https://github.com/koi141/demo-dbsec">
+         <img src="https://img.shields.io/github/commit-activity/w/koi141/demo-dbsec" alt="Commit Activity">
+      </a>
+   </p>
+
+Oracle Databaseのセキュリティ機能を簡単に試してみるチュートリアルを紹介するサイトです。
+
+
+.. note::
 
    | このサイトで紹介する手順では、実行結果の一部を見やすくするために整形や省略を行っています。
-   | そのため実際の結果とは若干異なる場合がありますが、ご了承ください。
+   | そのため、実際の結果とは若干異なる場合があります。ご了承ください。
 
-|
 .. toctree::
    :maxdepth: 1
    :caption: 環境準備:
