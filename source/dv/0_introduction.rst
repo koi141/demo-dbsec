@@ -8,7 +8,7 @@
 Database Vaultとは
 ***************************************************
 
-Oracle Database Vaultは、Oracle Database Enterprise Editionに付属するセキュリティ機能の一つで、特権ユーザーによる不正アクセスや操作を防止し、データベース内部での強力な分離制御を実現します。
+Oracle Database Vaultは、Oracle Database Enterprise Editionの追加ライセンスオプションの一つで、特権ユーザーによる不正アクセスや操作を防止し、データベース内部での強力な分離制御を実現します。
 Oracle Database Cloudサービスでは「High Performance」以上のエディションにてお使いいただけます。
 
 主な機能として「レルム」を使ったスキーマおよびオブジェクトへのアクセス制限、「コマンド・ルール」によるSQLクエリの制御等があります。
