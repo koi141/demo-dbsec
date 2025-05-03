@@ -13,6 +13,7 @@ Oracleが提供する新しい無償版バージョン「23ai FREE」では従�
 TDE や Database Vault など、従来の無償版XEでは使用できなかった機能が使えるようになっていますので、ぜひ、お試しください。
 
 使用可能な機能の一部は以下の通りです。
+
 + TDE
 + Data Redaction
 + Oracle Label Security
