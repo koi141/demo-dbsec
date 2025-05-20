@@ -1,3 +1,4 @@
-.devcontainer
-build/html/*
-build/doctree/*
+build/
+.DS_Store
+Makefile
+make.bat
