@@ -89,11 +89,11 @@ VPDポリシーの削除
 
 ポリシーが削除されたことを確認します。
 
+.. code-block:: sql
 
-SQL> select policy_name from all_policies where object_owner = 'HR';
+    SQL> select policy_name from all_policies where object_owner = 'HR';
 
-
-no rows selected
+    no rows selected
 
 
 以上でVPDのデモは終了です。

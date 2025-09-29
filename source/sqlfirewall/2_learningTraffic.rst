@@ -76,7 +76,7 @@ SYSユーザーに切り替え、キャプチャを停止します。
 
 最後の失敗したSQLを除き、正規化された形でキャプチャされていることが分かります。
 
-また、DBA_SQL_FIREWALL_CAPTURE_LOGSにはSQL_SIGNATURE列があり、ユニークなシグネチャを生成されていることも確認できます。
+また、``DBA_SQL_FIREWALL_CAPTURE_LOGS``には``SQL_SIGNATURE``列があり、ユニークなシグネチャを生成されていることも確認できます。
 
 .. code-block:: sql
 

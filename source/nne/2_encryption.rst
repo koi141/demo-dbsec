@@ -175,8 +175,6 @@ DBサーバーの ``$ORACLE_HOME/network/admin`` にある ``sqlnet.ora`` ファ
 
 この設定により、データベースとの通信が暗号化されるようになります。
 
-sudo rpm -ivh oracle.mgmt_agent.241023.2127.Linux-x86_64.rpm --preserve-env=JAVA_HOME
-
 ************************************
 暗号化設定後、再びDBに接続する
 ************************************
