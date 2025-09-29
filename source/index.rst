@@ -1,5 +1,14 @@
+:meta:
+   :description: Oracle Databaseの主要なセキュリティ機能を、実際に手を動かしながら学べるチュートリアルサイトです。
+   :keywords: Oracle Database, security, TDE, VPD, SQL Firewall, Database Vault, Data Redaction, チュートリアル
+   :og:title: Oracle DB Security Tutorial
+   :og:description: Oracle Databaseの主要なセキュリティ機能を、実際に手を動かしながら学べるチュートリアルサイトです。
+   :og:url: https://koi141.github.io/demo-dbsec/
+   :og:site_name: Oracle DB Security Tutorial
+
+
 ############################################
-Oracle DB Sec Tutorial
+Oracle DB Security Tutorial
 ############################################
 
 .. raw:: html

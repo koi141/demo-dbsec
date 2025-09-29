@@ -22,7 +22,8 @@ extensions = [
     'sphinx_togglebutton',
     'sphinx.ext.githubpages',
     'sphinx_copybutton',
-    'sphinx_design'
+    'sphinx_design',
+    'sphinxext.opengraph'
     ]
 
 templates_path = ['_templates']
@@ -42,3 +43,7 @@ html_theme_options = {
     "repository_url": "https://github.com/koi141/demo-dbsec",
     "use_repository_button": True,
 }
+
+ogp_site_url = "https://koi141.github.io/demo-dbsec/"
+ogp_site_name = "Oracle DB Security Tutorial"
+ogp_type = "website"
