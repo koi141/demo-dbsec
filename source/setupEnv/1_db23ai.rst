@@ -42,7 +42,8 @@ DB23ai を使用できる環境について
     + Oracle Database Appliance
     + Exadata Database Appliance
 
-> ダウンロードサイト： https://www.oracle.com/jp/database/free/get-started/
+
+ダウンロードサイト： https://www.oracle.com/jp/database/free/get-started/
 
 
 ******************************
@@ -62,9 +63,8 @@ rpmでインストールする場合、 `OCIチュートリアル <https://oracl
 
 .. admonition:: FREEのライセンス制限
 
-    | FREEでは処理に使用されるCPUは2コアに自動的に制限されます。
-    | RAMは最大2GBまでとなっており、使用可能な場合でも超過することはできません。
-    | データの使用料は最大12GBであり、これを超えて増加すると「ORA-12954: リクエストが、最大許容データベース・サイズの12GBを超えています」というエラーになります。
+    | FREEでは処理に使用されるCPUは2コアに自動的に制限されます。また、RAMは最大2GBまでとなっており、使用可能な場合でも超過することはできません。
+    | データの使用料は最大12GBであり、これを超えて増加すると「``ORA-12954: リクエストが、最大許容データベース・サイズの12GBを超えています``」というエラーになります。
     | 参考： `ライセンス制限 <https://docs.oracle.com/cd/G11854_01/xeinl/licensing-restrictions.html#GUID-A3BF7927-EC58-40FC-96B6-1A5E135D19BA>`__
 
 

@@ -4,9 +4,9 @@
 
 SQL Firewallを有効化します。環境はFREEPDB1です。
 
-**実施内容**
+.. topic:: 実施内容
 
-+ SQL Firewallの有効化
+    + SQL Firewallの有効化
 
 
 ****************************

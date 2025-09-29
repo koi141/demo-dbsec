@@ -5,13 +5,13 @@
 where句を使用すると行レベルでの制御になりますが、VPDでは列を制御することも可能です。
 この手順では、Virtual Private Database (VPD)を使用して、特定の列へのアクセスを制御します。
 
-**実施内容**
-
-+ VPD関数を作成する
-+ VPDポリシーを作成する
-+ HRユーザーで EMPLOYEES 表を確認
-+ SALES_APPユーザーで EMPLOYEES 表を確認し、VPDが正しく機能していることを確認
-+ 列を非表示ではなくNULL値で表示させる方法
+.. topic:: 実施内容
+    
+    + VPD関数を作成する
+    + VPDポリシーを作成する
+    + HRユーザーで EMPLOYEES 表を確認
+    + SALES_APPユーザーで EMPLOYEES 表を確認し、VPDが正しく機能していることを確認
+    + 列を非表示ではなくNULL値で表示させる方法
 
 
 

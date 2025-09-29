@@ -19,90 +19,117 @@ Oracle Databaseのセキュリティ機能を簡単に試してみるチュー�
 .. note::
 
    | このサイトで紹介する手順では、実行結果の一部を見やすくするために整形や省略を行っています。
-   | そのため、実際の結果とは若干異なる場合があります。ご了承ください。
+   | そのため、実際の結果とは若干異なる場合がありますのでご了承ください。
 
-.. toctree::
-   :maxdepth: 1
-   :caption: 環境準備:
 
-   /env_setup/1_db23ai
-   /env_setup/2_sampleSchema
+.. grid:: 1
 
-|
+   .. grid-item-card::
 
-.. toctree::
-   :maxdepth: 1
-   :caption: TDE（透過的データ暗号化）:
+      .. toctree::
+         :maxdepth: 1
+         :caption: 環境を準備する
+         :glob:
+
+         /setupEnv/*
+
+.. grid:: 2
+   :gutter: 2
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: 透過的データ暗号化 (TDE)
+         :glob:
+         
+         /tde/*
+
+   .. grid-item-card::
+      :padding: 1
+      
+      .. toctree::
+         :maxdepth: 1
+         :caption: ネイティブ・ネットワーク暗号化
+         :glob:
+         
+         /nne/*
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: Data Redaction
+         :glob:
+         
+         /redact/*
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: Virtual Private Database
+         :glob:
+         
+         /vpd/*
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: SQL Firewall
+         :glob:
+         
+         /sqlfirewall/*
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: Database Vault
+         :glob:
+         
+         /dbv/*
+
+   .. grid-item-card::
+      :padding: 1
+
+      .. toctree::
+         :maxdepth: 1
+         :caption: Oracle Label Security
+         :glob:
+         
+         /ols/*
    
-   /tde/0_introduction.rst
-   /tde/1_setup
-   /tde/2_encryption
-   /tde/3_autoWalletOpen
+   .. grid-item-card::
+      :padding: 1
 
-|
+      .. toctree::
+         :maxdepth: 1
+         :caption: Oracle Data Safe（準備中）
 
-.. toctree::
-   :maxdepth: 1
-   :caption: ネイティブ・ネットワーク暗号化:
-   
-   /nne/1_setup
-   /nne/2_encryption
+         /datasafe/1_setup.rst         
 
-|
+   .. grid-item-card::
+         :padding: 1
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Data Redaction:
-   
-   /redact/1_setup
-   /redact/2_redaction
-   /redact/3_note
+         .. toctree::
+            :maxdepth: 1
+            :caption: グローバル認証（準備中）
 
-|
+            /globalAuthn/*         
 
-.. toctree::
-   :maxdepth: 1
-   :caption: Virtual Private Database:
-   
-   /vpd/1_rowControl
-   /vpd/2_columnControl
-   /vpd/3_clientIdentifier
-   /vpd/4_cleanup
+   .. grid-item-card::
+         :padding: 1
 
-|
+         .. toctree::
+            :maxdepth: 1
+            :caption: 統合監査（準備中）
+            :glob:
 
-.. toctree::
-   :maxdepth: 1
-   :caption: SQL Firewall:
-   
-   /sqlfirewall/1_setup
-   /sqlfirewall/2_learningTraffic
-   /sqlfirewall/3_allowTraffic
-   /sqlfirewall/4_checkFirewall
-   /sqlfirewall/5_setup-datasafe
-
-|
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Database Vault:
-   
-   /dv/0_introduction
-   /dv/1_setup
-   /dv/2_authRealm
-   /dv/3_checkDv
-   /dv/4_twoPersonIntegrity
-   /dv/5_cleanup
-   /dv/99_checkComponent
-
-| 
-
-.. toctree::
-   :maxdepth: 1
-   :caption: Oracle Label Security:
-   
-   /ols/1_setup
-   /ols/2_setupPolicy
-   /ols/3_checkOls
-   /ols/4_labelColumn
-   /ols/5_cleanup
+            /unifiedAudit/*  

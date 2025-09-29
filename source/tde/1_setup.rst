@@ -108,7 +108,7 @@ tde_configuration
 
 サポートされるキーストアは以下の通りです。
 
-.. image:: ./images/サポートされるキーストア.png
+.. image:: ./_img/サポートされるキーストア.png
 
 
 詳細は `こちら <https://docs.oracle.com/cd/F82042_01/asoag/introduction-to-transparent-data-encryption.html>`__ でご確認ください。

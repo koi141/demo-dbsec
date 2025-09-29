@@ -1,5 +1,5 @@
 ############################################
-5. Data Safeの準備
+1. Data Safeの準備
 ############################################
 
 
@@ -70,7 +70,7 @@ DATASAFEユーザーにロールを追加する
 non-ADBの場合、スクリプト ``datasafe_privileges.sql`` を実行することで、ロールを付与または取り消しができます。
 このスクリプトはOCIコンソールの [メニューバー] → [Oracle Database] → [データ・セーフ - データベース・セキュリティ] と移動し、「ターゲットDBの登録」ボタンを選択した画面から入手することができます。
 
-.. image:: ./img_datasafe/権限スクリプトのDL.png
+.. image:: ./_img/権限スクリプトのDL.png
 
 
 
@@ -128,7 +128,7 @@ DBサーバーにスクリプトファイルを移し、SQL*Plusで接続。以�
     | ADBとnon-ADBで追加されるロールが異なります。
     | また、ADBでは ``DS$DATA_MASKING_ROLE`` 以外のすべてのロールがすでにデフォルトで付与されています。
 
-    .. figure:: ./img_datasafe/ロール.png
+    .. figure:: ./_img/ロール.png
 
 
 ******************************************
@@ -137,7 +137,7 @@ Data SafeにDBを登録する
 
 Data Safeの画面より、該当するターゲットDBの「ウィザードの起動」を選択します。今回はコンピュート上の23ai FREEをターゲットとするので、「コンピュート上のOracleデータベース」を選択した手順となります。
 
-.. figure:: ./img_datasafe/wz_DB登録_0.png
+.. figure:: ./_img/wz_DB登録_0.png
 
 .. hint::
 
@@ -149,19 +149,19 @@ Data Safeの画面より、該当するターゲットDBの「ウィザードの
 :サービス名: FREEPDB1
 :ポート番号: 1521
 
-.. figure:: ./img_datasafe/wz_DB登録_1.png
+.. figure:: ./_img/wz_DB登録_1.png
 
 |
 | 続いての画面ではDBとData Safeの接続口、プライベートエンドポイントを作成する画面となります。プライベート・エンドポイントは1つのVCNにつき1つしか作成できないため、すでに作成されている場合はそちらを使用してください。
 | 作成していない場合は「既存のプライベート・エンドポイントを使用しますか。」で「いいえ」を選択することで、この画面から直接作成することができます。
 
 
-.. figure:: ./img_datasafe/wz_DB登録_2.png
+.. figure:: ./_img/wz_DB登録_2.png
     
     すでにプライベートエンドポイントがある時の画面
 
 
-.. figure:: ./img_datasafe/wz_DB登録_2_PE.png
+.. figure:: ./_img/wz_DB登録_2_PE.png
 
     新規にプライベートエンドポイントを作成する時の画面
 
@@ -169,18 +169,18 @@ Data Safeの画面より、該当するターゲットDBの「ウィザードの
 
 
 
-.. figure:: ./img_datasafe/wz_DB登録_3.png
+.. figure:: ./_img/wz_DB登録_3.png
 
 
 
 最後に項目を確認し、「登録」をクリックします。
 
-.. figure:: ./img_datasafe/wz_DB登録_4.png
+.. figure:: ./_img/wz_DB登録_4.png
 
 
 そして無事登録され、ステータスが「ACTIVE」になっていることを確認します。
 
-.. figure:: ./img_datasafe/wz_DB登録_5.png
+.. figure:: ./_img/wz_DB登録_5.png
 
 
 以上でData SafeへのDB登録は終了です。

@@ -4,12 +4,12 @@
 
 この手順では、Virtual Private Database (VPD)を使用して、Oracle Databaseの行レベルアクセス制御を実装します。
 
-**実施内容**
-
-+ VPD関数を作成する
-+ VPDポリシーを作成する
-+ HRユーザーでEMMPLOYEES表を確認する
-+ SALES_APPユーザーでEMMPLOYEES表を確認し、VPDが機能していることを確かめる
+.. topic:: 実施内容
+    
+    + VPD関数を作成する
+    + VPDポリシーを作成する
+    + HRユーザーでEMMPLOYEES表を確認する
+    + SALES_APPユーザーでEMMPLOYEES表を確認し、VPDが機能していることを確かめる
 
 
 ****************************
